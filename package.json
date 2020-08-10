@@ -1,0 +1,23 @@
+{
+	"name": "c-tool",
+	"version": "1.0.0",
+	"description": "Generador de prototipos funcionales para la DIyS",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "electron ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Ghostramses/ProyectoFinal.git"
+	},
+	"author": "Gonzalez Rodriguez Alfredo Rafael",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Ghostramses/ProyectoFinal/issues"
+	},
+	"homepage": "https://github.com/Ghostramses/ProyectoFinal#readme",
+	"devDependencies": {
+		"electron": "^9.2.0"
+	}
+}

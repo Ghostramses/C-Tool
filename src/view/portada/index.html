@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../css/normalize.css" />
+		<link rel="stylesheet" href="../css/rootStyles.css" />
+		<link rel="stylesheet" href="styles.css" />
+		<title>C-Tool</title>
+		<script src="../../controller/portadaController.js"></script>
+		<script
+			src="https://kit.fontawesome.com/3093a813aa.js"
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<div class="slide slide-1" id="slide-1">
+			<div class="appInfo">
+				<h1 class="appName">C-Tool</h1>
+				<h2 class="appVersion">Versión 1.0.0</h2>
+			</div>
+			<div class="acciones">
+				<a class="btn btn-portada" href="#" id="nuevoPrototipo">
+					<i class="fas fa-plus"></i> Crear Nuevo Prototipo
+				</a>
+				<a class="btn btn-portada" href="#" id="abrirPrototipo">
+					<i class="fas fa-folder-open"></i> Abrir Prototipo
+				</a>
+			</div>
+		</div>
+		<div class="slide slide-2" id="slide-2">
+			<div class="config">
+				<div class="config-campo">
+					<label for="nombre">Nombre del Prototipo:</label>
+					<input
+						type="text"
+						id="nombre"
+						placeholder="Ej: Prototipo-1"
+					/>
+				</div>
+				<div class="config-campo">
+					<label for="ubicacion">Ubicación</label>
+					<div class="config-ubicacion">
+						<input type="text" id="ubicacion" />
+						<button id="btnUbicacion">...</button>
+					</div>
+				</div>
+			</div>
+			<div class="config-footer">
+				<a href="#" class="btn btn-config" id="cancelarNuevoProyecto"
+					><i class="fas fa-times"></i> Cancelar</a
+				>
+				<a href="#" class="btn btn-config" id="crearNuevoProyecto"
+					><i class="fas fa-flag-checkered"></i> Finalizar</a
+				>
+			</div>
+		</div>
+	</body>
+</html>

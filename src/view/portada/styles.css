@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+
+body {
+	overflow: hidden;
+	position: relative;
+}
+
+.slide {
+	height: 100vh;
+	position: absolute;
+	transition: all 0.5s ease-in-out;
+}
+
+.slide-1 {
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.slide-2 {
+	right: -1000px;
+	width: 100%;
+}
+
+.appInfo {
+	text-align: center;
+	border: 2px solid var(--paleta-2);
+	border-radius: 10%;
+	padding: 3rem 4rem;
+}
+
+.appName {
+	font-family: 'Dancing Script', cursive;
+	font-weight: 700;
+	font-size: 9rem;
+	margin: 2rem 0;
+}
+
+.appVersion {
+	margin: 0;
+	font-size: 1.6rem;
+}
+
+.acciones {
+	display: flex;
+	flex-direction: column;
+}
+
+.btn-portada {
+	margin: 1rem 0;
+	color: var(--paleta-1);
+	background-color: var(--paleta-4);
+	border: unset;
+	transition: all 0.2s ease-in;
+}
+
+.btn-portada:hover {
+	color: var(--paleta-2);
+	cursor: pointer;
+}
+
+.btn-portada:target {
+	border-color: var(--paleta-2);
+}
+.slide-2 {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.config-campo {
+	display: flex;
+	flex-direction: column;
+	font-size: 2rem;
+	padding: 1rem 2rem;
+}
+
+.config-campo label {
+	padding: 1rem 0;
+}
+
+.config-campo input {
+	background-color: transparent;
+	color: var(--paleta-1);
+	border: unset;
+	padding: 1rem 0.5rem;
+	border-bottom: 2px solid var(--paleta-3);
+	font-weight: 300;
+}
+
+.config-campo input:focus {
+	border-bottom: 2px solid var(--paleta-2);
+}
+
+.config-ubicacion {
+	display: flex;
+}
+
+.config-ubicacion input {
+	width: calc(95% - 0.5rem);
+}
+
+.config-ubicacion button {
+	width: 5%;
+	margin-left: auto;
+	color: var(--paleta-1);
+	background-color: var(--paleta-3);
+	border: 2px solid transparent;
+	border-radius: 10%;
+	cursor: pointer;
+}
+
+.config-ubicacion button:hover {
+	border-color: var(--paleta-2);
+}
+
+.config-footer {
+	text-align: right;
+	background-color: var(--paleta-3);
+	padding: 1rem 2rem;
+}
+
+.btn-config:hover {
+	color: var(--paleta-2);
+}

@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap');
+
+:root {
+	--paleta-1: #eeeeee;
+	--paleta-2: #32e0c4;
+	--paleta-3: #393e46;
+	--paleta-4: #222831;
+}
+
+html {
+	font-size: 62.5%; /* Reset para REMS - 62.5% = 10px de 16px */
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body {
+	background-color: var(--paleta-4);
+	color: var(--paleta-1);
+	font-family: 'Open Sans', sans-serif;
+}
+
+input:focus {
+	outline: none;
+}
+
+.btn {
+	padding: 1rem 2rem;
+	font-size: 2rem;
+	text-decoration: none;
+	color: var(--paleta-1);
+}
+
+.iconos {
+	color: var(--paleta-1);
+}
