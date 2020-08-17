@@ -13,6 +13,7 @@ function eventListeners() {
 	const inputUbicacion = document.getElementById('ubicacion');
 	const btnAbrirDirectorio = document.getElementById('btnUbicacion');
 	const btnCrearNuevoProyecto = document.getElementById('crearNuevoProyecto');
+	const btnAbrirPrototipo = document.getElementById('abrirPrototipo');
 
 	/* Cambiar de slide */
 	nuevoPrototipo.addEventListener('click', () => {
@@ -53,5 +54,9 @@ function eventListeners() {
 			name: inputNombre.value,
 			path: inputUbicacion.value
 		});
+	});
+
+	btnAbrirPrototipo.addEventListener('click', () => {
+		ipcRenderer.send('open-prototype');
 	});
 }

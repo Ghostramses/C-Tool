@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const fs = require('fs');
 
+//imports
+const { abrirArchivo, escribirArchivo } = require('./functions');
+
 const Proyecto = require('./model/Proyecto');
 
 let appWindow;
@@ -11,12 +14,14 @@ function createWindow() {
 		width: 800,
 		height: 600,
 		center: true,
-		//resizable: false,
+		resizable: false,
 		show: false,
 		webPreferences: {
 			nodeIntegration: true
 		}
 	});
+
+	appWindow.removeMenu();
 
 	appWindow.on('closed', () => (appWindow = null));
 
@@ -36,7 +41,8 @@ app.on('window-all-closed', () => {
 ipcMain.on('open-directory', event => {
 	dialog
 		.showOpenDialog(appWindow, {
-			properties: ['openDirectory']
+			properties: ['openDirectory'],
+			title: 'Seleccione una carpeta'
 		})
 		.then(({ filePaths }) => {
 			if (filePaths) {
@@ -60,22 +66,20 @@ ipcMain.on('create-project', (event, args) => {
 			});
 		}
 
-		escribirArchivo(
-			proyecto.path + '/' + proyecto.name + '.json',
-			proyecto
-		);
+		const filePath = proyecto.path + '/' + proyecto.name + '.json';
+		escribirArchivo(filePath, proyecto);
+		abrirArchivo(filePath);
 	});
 });
 
-function escribirArchivo(path, data) {
-	fs.writeFile(path, JSON.stringify(data), err => {
-		if (err) {
-			dialog.showErrorBox(
-				'Ha ocurrido un error',
-				'No se ha podido crear el archivo del proyecto'
-			);
-			return;
-		}
-		console.log('Archivo Creado Correctamente');
-	});
-}
+ipcMain.on('open-prototype', event => {
+	dialog
+		.showOpenDialog(appWindow, {
+			title: 'Seleccione un prototipo',
+			properties: ['openFile'],
+			filters: [{ name: 'Prototypes', extensions: ['json'] }]
+		})
+		.then(({ filePaths }) => {
+			proyecto = abrirArchivo(filePaths.toString());
+		});
+});

@@ -1,5 +1,5 @@
-module.exports = function (name = '', path = '', componentes = []) {
+module.exports = function (name = '', path = '', modules = []) {
 	this.name = name;
 	this.path = path;
-	this.componentes = componentes;
+	this.modules = modules;
 };
