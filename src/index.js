@@ -1,13 +1,17 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, screen } = require('electron');
 const fs = require('fs');
 
 //imports
 const { abrirArchivo, escribirArchivo } = require('./functions');
 
 const Proyecto = require('./model/Proyecto');
+const Modulo = require('./model/Modulo');
 
 let appWindow;
+let modulesWindow;
+let editorWindow;
 let proyecto;
+let moduleToEdit = {};
 
 function createWindow() {
 	appWindow = new BrowserWindow({
@@ -38,6 +42,59 @@ app.on('window-all-closed', () => {
 	}
 });
 
+function createModulesWindow() {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+	modulesWindow = new BrowserWindow({
+		minWidth: 800,
+		minHeight: 600,
+		height,
+		width,
+		title: 'C-Tool: ' + proyecto.path + '/' + proyecto.name,
+		show: false,
+		webPreferences: {
+			nodeIntegration: true,
+			nodeIntegrationInWorker: true
+		}
+	});
+	appWindow.close();
+
+	modulesWindow.on('closed', () => (modulesWindow = null));
+
+	modulesWindow.loadFile('./src/view/modules/index.html');
+
+	modulesWindow.once('ready-to-show', () => modulesWindow.show());
+}
+
+function createEditorWindow(modulo) {
+	/*
+	if (editorWindow) {
+		editorWindow.close();
+	}
+	*/
+	editorWindow = new BrowserWindow({
+		parent: modulesWindow,
+		modal: true,
+		minWidth: 800,
+		minHeight: 600,
+		title: `C-Tool: ${modulo} Editor`,
+		show: false,
+		webPreferences: {
+			nodeIntegration: true,
+			nodeIntegrationInWorker: true
+		}
+	});
+
+	editorWindow.loadFile('./src/view/editor/index.html');
+
+	editorWindow.on('closed', () => (editorWindow = null));
+
+	editorWindow.once('ready-to-show', () => editorWindow.show());
+
+	editorWindow.focus();
+}
+
+// * Listeners
+
 ipcMain.on('open-directory', event => {
 	dialog
 		.showOpenDialog(appWindow, {
@@ -67,8 +124,11 @@ ipcMain.on('create-project', (event, args) => {
 		}
 
 		const filePath = proyecto.path + '/' + proyecto.name + '.json';
+		proyecto.modules.login = new Modulo('Login');
+		proyecto.modules.administracion = new Modulo('Administracion');
 		escribirArchivo(filePath, proyecto);
 		abrirArchivo(filePath);
+		createModulesWindow();
 	});
 });
 
@@ -81,5 +141,22 @@ ipcMain.on('open-prototype', event => {
 		})
 		.then(({ filePaths }) => {
 			proyecto = abrirArchivo(filePaths.toString());
+			if (proyecto) {
+				createModulesWindow();
+			}
 		});
 });
+
+ipcMain.on('get-project', event => event.sender.send('project-info', proyecto));
+
+ipcMain.on('save-local', (event, args) => (proyecto = args));
+
+ipcMain.on('open-editor', (event, { moduleName, moduleKey }) => {
+	createEditorWindow(moduleName);
+	moduleToEdit.name = moduleName;
+	moduleToEdit.key = moduleKey;
+});
+
+ipcMain.on('get-module-to-edit', event =>
+	event.sender.send('module-info', { proyecto, moduleToEdit })
+);

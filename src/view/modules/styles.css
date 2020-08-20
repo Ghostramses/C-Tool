@@ -1,0 +1,44 @@
+.titulo-modulos {
+	font-size: 3.6rem;
+}
+
+.modulos {
+	font-size: 1.6rem;
+	min-height: 50vh;
+	margin: 2.5rem 0;
+}
+
+.sin-modulos {
+	padding: 2rem 2.5rem;
+	border: 2px solid var(--paleta-3);
+	border-radius: 15px;
+	height: 50vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--paleta-3);
+	user-select: none;
+}
+
+.modulo {
+	border: 2px solid var(--paleta-3);
+	font-size: 2rem;
+	border-radius: 15px;
+	margin: 1.2rem 0;
+	padding: 1rem 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition-property: border-color, background-color;
+	transition-timing-function: ease-in-out;
+	transition-duration: 0.3s;
+}
+
+.modulo:hover {
+	border-color: var(--paleta-2);
+	background-color: var(--paleta-3);
+}
+
+.btn-control-panel {
+	flex: 0 0 11%;
+}

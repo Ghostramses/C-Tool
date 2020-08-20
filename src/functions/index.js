@@ -3,15 +3,15 @@ const Proyecto = require('./../model/Proyecto');
 const { dialog } = require('electron');
 
 exports.escribirArchivo = (path, data) => {
-	fs.writeFile(path, JSON.stringify(data), err => {
-		if (err) {
-			dialog.showErrorBox(
-				'Ha ocurrido un error',
-				'No se ha podido escribir en el archivo del proyecto'
-			);
-			return;
-		}
-	});
+	try {
+		fs.writeFileSync(path, JSON.stringify(data));
+	} catch (err) {
+		dialog.showErrorBox(
+			'Ha ocurrido un error',
+			'No se ha podido escribir en el archivo del proyecto'
+		);
+		return;
+	}
 };
 
 exports.abrirArchivo = path => {

@@ -28,6 +28,24 @@ input:focus {
 	outline: none;
 }
 
+.contenedor {
+	width: 95%;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+div.align-right {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+div.align-left {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
 .btn {
 	padding: 1rem 2rem;
 	font-size: 2rem;
@@ -35,6 +53,59 @@ input:focus {
 	color: var(--paleta-1);
 }
 
+.btn-crear {
+	color: var(--paleta-2);
+	background-color: var(--paleta-4);
+	border: 2px solid var(--paleta-2);
+	border-radius: 10px;
+	transition: background-color 0.2s ease-in;
+}
+
+.btn-control-edit,
+.btn-control-delete {
+	padding: 1.2rem;
+	border: 2px solid;
+	border-radius: 10px;
+	color: var(--paleta-1);
+	background-color: var(--paleta-4);
+	margin: 0.5rem;
+	transition: background-color 0.3s ease-in;
+}
+
+.btn-control-edit {
+	border-color: var(--paleta-2);
+}
+
+.btn-control-edit:hover {
+	background-color: var(--paleta-2);
+}
+
+.btn-control-delete {
+	border-color: #ff0000;
+}
+
+.btn-control-delete:hover {
+	background-color: #ff0000;
+}
+
+.btn-crear:hover {
+	background-color: var(--paleta-3);
+}
+
 .iconos {
 	color: var(--paleta-1);
+}
+
+.titulo {
+	text-align: center;
+}
+
+.swal2-title {
+	color: var(--paleta-1) !important;
+}
+
+.swal2-popup,
+.swal2-content {
+	font-size: 2rem !important;
+	color: var(--paleta-1) !important;
 }
