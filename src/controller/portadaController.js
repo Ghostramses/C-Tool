@@ -42,8 +42,10 @@ function eventListeners() {
 		(event, path) => (document.getElementById('ubicacion').value = path)
 	);
 
+	ipcRenderer.on('error-nombre-proyecto',()=>inputNombre.focus())
+
 	btnCrearNuevoProyecto.addEventListener('click', () => {
-		if (inputNombre.value === '') {
+		if (inputNombre.value === '' ) {
 			inputNombre.focus();
 			return;
 		} else if (inputUbicacion.value === '') {
