@@ -66,11 +66,6 @@ function createModulesWindow() {
 }
 
 function createEditorWindow(modulo) {
-	/*
-	if (editorWindow) {
-		editorWindow.close();
-	}
-	*/
 	editorWindow = new BrowserWindow({
 		parent: modulesWindow,
 		modal: true,
@@ -88,7 +83,10 @@ function createEditorWindow(modulo) {
 
 	editorWindow.on('closed', () => (editorWindow = null));
 
-	editorWindow.once('ready-to-show', () => editorWindow.show());
+	editorWindow.once('ready-to-show', () => {
+		editorWindow.show();
+		editorWindow.maximize();
+	});
 
 	editorWindow.focus();
 }

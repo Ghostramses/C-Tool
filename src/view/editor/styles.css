@@ -1,0 +1,60 @@
+.titulo-editor {
+	font-size: 3rem;
+}
+
+.workspace {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.titulo-workspace {
+	font-size: 2.6rem;
+}
+
+.elemento-workspace {
+	padding: 1rem;
+	border: 2px solid var(--paleta-3);
+	border-radius: 1rem;
+	height: 90vh;
+}
+
+.vistas {
+	flex: 0 0 calc(25% - 2rem);
+}
+
+.btn-crear-vista {
+	display: block;
+	width: 100%;
+	margin: 1rem 0;
+}
+
+.elementos-vistas {
+	margin-top: 2rem;
+	border-top: 2px solid var(--paleta-3);
+}
+
+.arbol {
+	flex: 0 0 calc(30% - 2rem);
+}
+
+.elementos {
+	flex: 0 0 calc(45% - 2rem);
+}
+
+.categoria .elementos-categoria {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	row-gap: 1rem;
+	column-gap: 0.7rem;
+}
+
+.elemento-dom {
+	padding: 1rem 1.5rem;
+	border: 1px solid var(--paleta-2);
+	border-radius: 0.5rem;
+	color: var(--paleta-1);
+	font-size: 1.8rem;
+	cursor: pointer;
+}

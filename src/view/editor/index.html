@@ -13,6 +13,62 @@
 		<script src="../../controller/editorController.js"></script>
 	</head>
 	<body>
-		<h1 class="titulo" id="moduleName"></h1>
+		<h1 class="titulo titulo-editor" id="moduleName"></h1>
+		<div class="workspace">
+			<div id="vistas" class="vistas elemento-workspace">
+				<h3 class="titulo titulo-workspace">Vistas</h3>
+				<button class="btn btn-crear btn-crear-vista" id="crearVista">
+					<i class="far fa-plus-square"></i> Crear Vista
+				</button>
+				<div class="elementos-vistas"></div>
+			</div>
+			<div id="arbol" class="arbol elemento-workspace">
+				<h3 class="titulo titulo-workspace">
+					Árbol <span id="tituloArbol"></span>
+				</h3>
+			</div>
+			<div id="elementos" class="elementos elemento-workspace">
+				<h3 class="titulo titulo-workspace">Elementos del DOM</h3>
+				<div id="categorias" class="categorias">
+					<div class="categoria">
+						<h4>Lorem, ipsum dolor.</h4>
+						<div class="elementos-categoria">
+							<div class="elemento-dom">Lorem, ipsum.</div>
+							<div class="elemento-dom">Libero, quod!</div>
+							<div class="elemento-dom">Quisquam, harum?</div>
+							<div class="elemento-dom">Expedita, tenetur.</div>
+							<div class="elemento-dom">Nihil, accusantium.</div>
+							<div class="elemento-dom">Nostrum, doloribus?</div>
+						</div>
+					</div>
+					<div class="categoria">
+						<h4>Eligendi, ut necessitatibus?</h4>
+						<div class="elementos-categoria">
+							<div class="elemento-dom">Quidem, consequatur!</div>
+							<div class="elemento-dom">
+								Adipisci, voluptatem.
+							</div>
+							<div class="elemento-dom">Cum, dolore!</div>
+							<div class="elemento-dom">Provident, sunt?</div>
+							<div class="elemento-dom">Temporibus, dolorem.</div>
+							<div class="elemento-dom">Sequi, quae.</div>
+						</div>
+					</div>
+					<div class="categoria">
+						<h4>Quod, optio facilis!</h4>
+						<div class="elementos-categoria">
+							<div class="elemento-dom">Dolores, alias.</div>
+							<div class="elemento-dom">Consectetur, vel!</div>
+							<div class="elemento-dom">
+								Reprehenderit, inventore!
+							</div>
+							<div class="elemento-dom">Quidem, blanditiis?</div>
+							<div class="elemento-dom">Alias, totam!</div>
+							<div class="elemento-dom">Veniam, numquam.</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

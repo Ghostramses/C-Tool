@@ -46,3 +46,7 @@ exports.abrirArchivo = path => {
 		return proyecto ? proyecto : null;
 	}
 };
+
+exports.guardarCambiosLocales = data => {
+	ipcRenderer.send('save-local', data);
+};

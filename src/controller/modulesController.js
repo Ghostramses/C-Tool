@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron');
 const Swal = require('sweetalert2');
 const Modulo = require('../../model/Modulo');
+const { guardarCambiosLocales } = require('../../functions');
 
 let proyecto;
 
@@ -141,8 +142,4 @@ function printModules(modules, parent) {
         `;
 		parent.appendChild(divModulo);
 	}
-}
-
-function guardarCambiosLocales(data) {
-	ipcRenderer.send('save-local', data);
 }
