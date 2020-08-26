@@ -6,11 +6,7 @@ exports.escribirArchivo = (path, data) => {
 	try {
 		fs.writeFileSync(path, JSON.stringify(data));
 	} catch (err) {
-		dialog.showErrorBox(
-			'Ha ocurrido un error',
-			'No se ha podido escribir en el archivo del proyecto'
-		);
-		return;
+		throw err;
 	}
 };
 

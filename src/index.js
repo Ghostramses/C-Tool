@@ -119,14 +119,30 @@ ipcMain.on('create-project', (event, args) => {
 					return;
 				}
 			});
+		}else{
+
+			const filePath = proyecto.path + '/' + proyecto.name + '.json';
+			try{
+				escribirArchivo(filePath, proyecto);
+				abrirArchivo(filePath);
+				createModulesWindow();
+			}
+			catch(e){
+				if(e.code==="ENOENT"){
+					dialog.showErrorBox(
+						'Ha ocurrido un error',
+						'El nombre del proyecto contiene un caracter no válido.'
+					);
+					appWindow.webContents.send('error-nombre-proyecto');
+					return;
+				}
+				dialog.showErrorBox(
+					'Ha ocurrido un error',
+					'No se ha podido escribir en el archivo del proyecto'
+				);
+			}
 		}
 
-		const filePath = proyecto.path + '/' + proyecto.name + '.json';
-		proyecto.modules.login = new Modulo('Login');
-		proyecto.modules.administracion = new Modulo('Administracion');
-		escribirArchivo(filePath, proyecto);
-		abrirArchivo(filePath);
-		createModulesWindow();
 	});
 });
 
