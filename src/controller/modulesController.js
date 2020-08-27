@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		printModules(proyecto.modules, listaModulos);
 	});
 
+	ipcRenderer.on('update-project', (event, args) => (proyecto = args));
+
 	btnCrearModulo.addEventListener('click', async e => {
 		const { value: nombreModulo } = await Swal.fire({
 			title: 'Ingrese el nombre del nuevo módulo',

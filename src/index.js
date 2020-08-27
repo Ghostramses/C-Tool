@@ -81,7 +81,12 @@ function createEditorWindow(modulo) {
 
 	editorWindow.loadFile('./src/view/editor/index.html');
 
-	editorWindow.on('closed', () => (editorWindow = null));
+	editorWindow.on('closed', () => {
+		editorWindow = null;
+	});
+	editorWindow.on('close', () =>
+		modulesWindow.webContents.send('update-project', proyecto)
+	);
 
 	editorWindow.once('ready-to-show', () => {
 		editorWindow.show();
@@ -119,16 +124,14 @@ ipcMain.on('create-project', (event, args) => {
 					return;
 				}
 			});
-		}else{
-
+		} else {
 			const filePath = proyecto.path + '/' + proyecto.name + '.json';
-			try{
+			try {
 				escribirArchivo(filePath, proyecto);
 				abrirArchivo(filePath);
 				createModulesWindow();
-			}
-			catch(e){
-				if(e.code==="ENOENT"){
+			} catch (e) {
+				if (e.code === 'ENOENT') {
 					dialog.showErrorBox(
 						'Ha ocurrido un error',
 						'El nombre del proyecto contiene un caracter no válido.'
@@ -142,7 +145,6 @@ ipcMain.on('create-project', (event, args) => {
 				);
 			}
 		}
-
 	});
 });
 
@@ -161,7 +163,9 @@ ipcMain.on('open-prototype', event => {
 		});
 });
 
-ipcMain.on('get-project', event => event.sender.send('project-info', proyecto));
+ipcMain.on('get-project', event => {
+	event.sender.send('project-info', proyecto);
+});
 
 ipcMain.on('save-local', (event, args) => (proyecto = args));
 
@@ -174,3 +178,8 @@ ipcMain.on('open-editor', (event, { moduleName, moduleKey }) => {
 ipcMain.on('get-module-to-edit', event =>
 	event.sender.send('module-info', { proyecto, moduleToEdit })
 );
+
+ipcMain.on('test', event => {
+	console.log(event);
+	console.log('Si envia');
+});
