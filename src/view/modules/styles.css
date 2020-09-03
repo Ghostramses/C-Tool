@@ -8,18 +8,6 @@
 	margin: 2.5rem 0;
 }
 
-.sin-modulos {
-	padding: 2rem 2.5rem;
-	border: 2px solid var(--paleta-3);
-	border-radius: 15px;
-	height: 50vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--paleta-3);
-	user-select: none;
-}
-
 .modulo {
 	border: 2px solid var(--paleta-3);
 	font-size: 2rem;
@@ -32,6 +20,13 @@
 	transition-property: border-color, background-color;
 	transition-timing-function: ease-in-out;
 	transition-duration: 0.3s;
+}
+
+.modulo > p {
+	overflow-wrap: break-word;
+	flex: 0 0 89%;
+	width: 80%;
+	/*max-width: 1200px;*/
 }
 
 .modulo:hover {

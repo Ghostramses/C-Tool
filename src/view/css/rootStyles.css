@@ -97,6 +97,9 @@ div.align-left {
 }
 
 .titulo {
+	width: 100%;
+	overflow-wrap: break-word;
+	padding: 1rem 1.5rem;
 	text-align: center;
 }
 
@@ -108,4 +111,20 @@ div.align-left {
 .swal2-content {
 	font-size: 2rem !important;
 	color: var(--paleta-1) !important;
+}
+
+.sin-modulos {
+	padding: 2rem 2.5rem;
+	border: 2px solid var(--paleta-3);
+	border-radius: 15px;
+	height: 50vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--paleta-3);
+	user-select: none;
+}
+
+.sin-borde {
+	border: none;
 }

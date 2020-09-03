@@ -46,3 +46,9 @@ exports.abrirArchivo = path => {
 exports.guardarCambiosLocales = data => {
 	ipcRenderer.send('save-local', data);
 };
+
+exports.limpiarDiv = parent => {
+	while (parent.firstChild) {
+		parent.firstChild.remove();
+	}
+};

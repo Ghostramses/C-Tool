@@ -1,3 +1,7 @@
+body {
+	padding-bottom: 1.5rem;
+}
+
 .titulo-editor {
 	font-size: 3rem;
 }
@@ -17,11 +21,17 @@
 	padding: 1rem;
 	border: 2px solid var(--paleta-3);
 	border-radius: 1rem;
-	height: 90vh;
+	height: 88vh;
+}
+
+.titulo-workspace-borde {
+	border-bottom: 0.2rem solid var(--paleta-3);
+	padding-bottom: 1.5rem;
 }
 
 .vistas {
 	flex: 0 0 calc(25% - 2rem);
+	overflow: hidden;
 }
 
 .btn-crear-vista {
@@ -32,7 +42,63 @@
 
 .elementos-vistas {
 	margin-top: 2rem;
+	padding: 1.5rem 0 0;
 	border-top: 2px solid var(--paleta-3);
+	max-height: 72vh;
+	overflow-y: auto;
+}
+
+.elementos-vistas::-webkit-scrollbar {
+	display: none;
+}
+
+.vista {
+	width: 100%;
+	overflow-wrap: break-word;
+	border: 2px solid var(--paleta-1);
+	border-radius: 1rem;
+	color: var(--paleta-1);
+	padding: 0.75rem 1rem;
+	margin: 1rem 0;
+	font-size: 1.8rem;
+	transition-property: color, border-color, background-color;
+	transition-duration: 0.3s;
+	transition-timing-function: ease-out;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.vista:last-of-type {
+	margin-bottom: 3rem;
+}
+
+.vista:hover {
+	color: var(--paleta-3);
+	border-color: var(--paleta-2);
+	background-color: var(--paleta-2);
+}
+
+.vista:hover > .btn-view-delete {
+	opacity: 1;
+}
+
+.vista > span {
+	width: 90%;
+	cursor: pointer;
+}
+
+.vista-seleccionada {
+	border-color: var(--paleta-2);
+}
+
+.btn-view-delete {
+	color: #ff0000;
+	background-color: unset;
+	border: none;
+	opacity: 0;
+	transition: opacity 0.3s ease-out;
+	cursor: pointer;
 }
 
 .arbol {

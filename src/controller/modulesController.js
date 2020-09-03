@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 const Swal = require('sweetalert2');
 const Modulo = require('../../model/Modulo');
-const { guardarCambiosLocales } = require('../../functions');
+const { guardarCambiosLocales, limpiarDiv } = require('../../functions');
 
 let proyecto;
 
@@ -37,12 +37,50 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 		if (nombreModulo) {
-			proyecto.modules[nombreModulo] = new Modulo(nombreModulo);
+			if (proyecto.modules[nombreModulo] != undefined) {
+				Swal.fire({
+					title: '¿Está seguro?',
+					text: `Se sobreescribira el módulo ${proyecto.modules[nombreModulo].name}`,
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#32e0c4',
+					confirmButtonText: 'Sobreescribir',
+					cancelButtonColor: '#d33',
+					cancelButtonText: 'Cancelar',
+					background: '#222831'
+				}).then(result => {
+					if (result.value) {
+						Swal.fire({
+							title: 'Sobreescrito',
+							text: `El módulo ${proyecto.modules[nombreModulo].name} ha sido sobreescrito`,
+							icon: 'success',
+							background: '#222831'
+						});
+						proyecto.modules[nombreModulo] = new Modulo(
+							nombreModulo
+						);
 
-			// * Enviar el proyecto a backend
-			guardarCambiosLocales(proyecto);
+						// * Enviar el proyecto a backend
+						guardarCambiosLocales(proyecto);
 
-			printModules(proyecto.modules, listaModulos);
+						printModules(proyecto.modules, listaModulos);
+					} else {
+						Swal.fire({
+							title: 'No se sobreescribió el módulo',
+							text: `El módulo ${proyecto.modules[nombreModulo].name} no ha sido sobreescrito`,
+							icon: 'error',
+							background: '#222831'
+						});
+					}
+				});
+			} else {
+				proyecto.modules[nombreModulo] = new Modulo(nombreModulo);
+
+				// * Enviar el proyecto a backend
+				guardarCambiosLocales(proyecto);
+
+				printModules(proyecto.modules, listaModulos);
+			}
 		}
 	});
 
@@ -121,14 +159,13 @@ function printModules(modules, parent) {
 		}
 		return;
 	}
-	while (parent.firstChild) {
-		parent.firstChild.remove();
-	}
+	limpiarDiv(parent);
 	for (const modulo in modules) {
-		let divModulo = document.createElement('div');
-		divModulo.classList.add('modulo');
-		divModulo.setAttribute('object-key', modulo);
-		divModulo.innerHTML = `
+		if (modules.hasOwnProperty(modulo)) {
+			let divModulo = document.createElement('div');
+			divModulo.classList.add('modulo');
+			divModulo.setAttribute('object-key', modulo);
+			divModulo.innerHTML = `
         <p>
         <i class="far fa-folder"></i>
         ${modules[modulo].name}
@@ -142,6 +179,7 @@ function printModules(modules, parent) {
             </button>
         </div>
         `;
-		parent.appendChild(divModulo);
+			parent.appendChild(divModulo);
+		}
 	}
 }
