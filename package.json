@@ -19,7 +19,7 @@
 	},
 	"homepage": "https://github.com/Ghostramses/ProyectoFinal#readme",
 	"devDependencies": {
-		"electron": "^9.2.0",
+		"electron": "^10.1.1",
 		"electron-builder": "^22.8.0"
 	},
 	"dependencies": {
