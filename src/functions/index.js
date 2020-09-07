@@ -52,3 +52,7 @@ exports.limpiarDiv = parent => {
 		parent.firstChild.remove();
 	}
 };
+
+exports.drag = ev => {
+	console.log('Evento drag');
+};
