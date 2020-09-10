@@ -1,7 +1,10 @@
 const { ipcRenderer } = require('electron');
 const Swal = require('sweetalert2');
 const Modulo = require('../../model/Modulo');
-const { guardarCambiosLocales, limpiarDiv } = require('../../functions');
+const {
+	guardarCambiosLocales,
+	limpiarDiv
+} = require('../../functions/render.js');
 
 let proyecto;
 

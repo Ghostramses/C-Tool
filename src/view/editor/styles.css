@@ -105,6 +105,25 @@ body {
 	flex: 0 0 calc(30% - 2rem);
 }
 
+.estructura-arbol {
+	height: 85%;
+	position: relative;
+}
+
+.agregar-item {
+	position: absolute;
+	background-color: var(--paleta-3);
+	opacity: 90%;
+	height: 95%;
+	width: 100%;
+	z-index: 2;
+	top: 0;
+}
+
+.agregar-item-hide {
+	display: none;
+}
+
 .elementos {
 	flex: 0 0 calc(45% - 2rem);
 }
@@ -122,5 +141,5 @@ body {
 	border-radius: 0.5rem;
 	color: var(--paleta-1);
 	font-size: 1.8rem;
-	cursor: pointer;
+	cursor: move;
 }

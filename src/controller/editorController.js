@@ -1,8 +1,10 @@
 const { ipcRenderer } = require('electron');
 const Swal = require('sweetalert2');
 const Vista = require('./../../model/Vista');
-const { guardarCambiosLocales } = require('../../functions');
-const { limpiarDiv } = require('../../functions');
+const {
+	guardarCambiosLocales,
+	limpiarDiv
+} = require('../../functions/render.js');
 
 let proyecto = {};
 let moduleToEdit = {};
@@ -14,6 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	const btnCrearVista = document.getElementById('crearVista');
 	const divVistas = document.getElementById('elementos-vistas');
 	const spanArbol = document.getElementById('tituloArbol');
+	const estructuraArbol = document.getElementById('estructuraArbol');
+	const divMensajeArbol = document.createElement('div');
+	const elementosDOMDraggable = document.getElementsByClassName(
+		'elemento-dom'
+	);
 
 	ipcRenderer.send('get-module-to-edit');
 	ipcRenderer.on('module-info', (event, args) => {
@@ -175,6 +182,57 @@ document.addEventListener('DOMContentLoaded', () => {
 			llaveVistaAnterior = vistaAnterior.getAttribute('view-key');
 		}
 	});
+
+	// ! Aqui se realizan pruebas de drag and drop
+
+	divMensajeArbol.innerHTML = `
+		<p>Arrastra y suela los elementos aquí</p>
+	`;
+	divMensajeArbol.classList.add('agregar-item', 'agregar-item-hide');
+	estructuraArbol.appendChild(divMensajeArbol);
+
+	estructuraArbol.addEventListener(
+		'dragover',
+		e => {
+			e.preventDefault();
+			//		console.log(e);
+		},
+		false
+	);
+
+	/*
+	estructuraArbol.addEventListener(
+		'dragleave',
+		e => {
+			console.log(e);
+			divMensajeArbol.classList.remove('agregar-item');
+			estructuraArbol.removeChild(divMensajeArbol);
+		},
+		false
+	);
+	*/
+
+	estructuraArbol.addEventListener(
+		'drop',
+		e => {
+			e.preventDefault();
+			console.log(e.target);
+			console.log(e.dataTransfer.getData('type'));
+		},
+		false
+	);
+
+	for (let elementoDom of elementosDOMDraggable) {
+		elementoDom.setAttribute('draggable', true);
+		elementoDom.addEventListener(
+			'dragstart',
+			e => {
+				console.log(event);
+				e.dataTransfer.setData('type', 'mortal');
+			},
+			false
+		);
+	}
 });
 
 function printViews(views, parent = document.createElement('div')) {
