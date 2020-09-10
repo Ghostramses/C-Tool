@@ -4,7 +4,8 @@
 	"description": "Generador de prototipos funcionales para la DIyS",
 	"main": "src/index.js",
 	"scripts": {
-		"dev": "electron .",
+		"compile": "tsc",
+		"dev": "run compile && electron .",
 		"build:windows": "electron-builder -w",
 		"build:linux": "electron-builder -l"
 	},
@@ -23,6 +24,7 @@
 		"electron-builder": "^22.8.0"
 	},
 	"dependencies": {
-		"sweetalert2": "^9.17.1"
+		"sweetalert2": "^9.17.1",
+		"typescript": "^4.0.2"
 	}
 }
