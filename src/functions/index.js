@@ -42,17 +42,3 @@ exports.abrirArchivo = path => {
 		return proyecto ? proyecto : null;
 	}
 };
-
-exports.guardarCambiosLocales = data => {
-	ipcRenderer.send('save-local', data);
-};
-
-exports.limpiarDiv = parent => {
-	while (parent.firstChild) {
-		parent.firstChild.remove();
-	}
-};
-
-exports.drag = ev => {
-	console.log('Evento drag');
-};
