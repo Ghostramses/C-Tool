@@ -5,6 +5,7 @@
 	"main": "src/index.js",
 	"scripts": {
 		"compile": "tsc",
+		"compile:run": "tsc && node src/model/nodes",
 		"dev": "run compile && electron .",
 		"build:windows": "electron-builder -w",
 		"build:linux": "electron-builder -l"

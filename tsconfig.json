@@ -10,8 +10,8 @@
 		"removeComments": false,
 		"noImplicitAny": false,
 		"suppressImplicitAnyIndexErrors": true,
-		"rootDir": "./src/model/Nodes/ts",
-		"outDir": "./src/model/Nodes"
+		"rootDir": "./src/model/ts",
+		"outDir": "./src/model/nodes"
 	},
 	"exclude": ["node_modules"]
 }
