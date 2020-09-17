@@ -11,7 +11,7 @@
 		"noImplicitAny": false,
 		"suppressImplicitAnyIndexErrors": true,
 		"rootDir": "./src/model/ts",
-		"outDir": "./src/model/nodes"
+		"outDir": "./src/model/"
 	},
 	"exclude": ["node_modules"]
 }
