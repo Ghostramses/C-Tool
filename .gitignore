@@ -2,5 +2,6 @@ node_modules/
 package-lock.json
 
 src/model/nodes/
+src/model/ts/index.ts
 
 dist
