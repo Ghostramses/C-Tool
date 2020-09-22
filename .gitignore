@@ -1,7 +1,8 @@
 node_modules/
 package-lock.json
 
-src/model/nodes/
+src/model/composite
+src/model/iterator
 src/model/ts/index.ts
 
 dist

@@ -6,7 +6,8 @@
 	"scripts": {
 		"compile": "tsc",
 		"compile:run": "tsc && node src/model/nodes",
-		"dev": "run compile && electron .",
+		"play": "electron .",
+		"dev": "npm run compile && npm run play",
 		"build:windows": "electron-builder -w",
 		"build:linux": "electron-builder -l"
 	},
