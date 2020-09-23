@@ -1,0 +1,38 @@
+.titulo-modelos {
+	font-size: 3.6rem;
+}
+
+.modelos {
+	font-size: 1.6rem;
+	min-height: 50vh;
+	margin: 2.5rem 0;
+}
+
+.modelo {
+	border: 2px solid var(--paleta-3);
+	font-size: 2rem;
+	border-radius: 15px;
+	margin: 1.2rem 0;
+	padding: 1rem 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition-property: border-color, background-color;
+	transition-timing-function: ease-in-out;
+	transition-duration: 0.3s;
+}
+
+.modelo > p {
+	overflow-wrap: break-word;
+	flex: 0 0 89%;
+	width: 80%;
+}
+
+.modelo:hover {
+	border-color: var(--paleta-2);
+	background-color: var(--paleta-3);
+}
+
+.btn-control-panel {
+	flex: 0 0 11%;
+}

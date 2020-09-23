@@ -15,12 +15,12 @@ exports.abrirArchivo = path => {
 	try {
 		const data = fs.readFileSync(path, 'utf8');
 		const json = JSON.parse(data);
-		if (!json.name || !json.path || !json.modules) {
+		if (!json.name || !json.path || !json.models) {
 			let err = new Error();
 			err.code = 'NOTAPROTOTYPE';
 			throw err;
 		}
-		proyecto = new Proyecto(json.name, json.path, json.modules);
+		proyecto = new Proyecto(json.name, json.path, json.models);
 	} catch (error) {
 		if (error.code === 'EISDIR') {
 			dialog.showErrorBox(

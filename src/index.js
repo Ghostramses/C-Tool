@@ -8,7 +8,7 @@ const Proyecto = require('./model/Proyecto');
 const Modulo = require('./model/Modulo');
 
 let appWindow;
-let modulesWindow;
+let modelsWindow;
 let editorWindow;
 let proyecto;
 let moduleToEdit = {};
@@ -42,9 +42,9 @@ app.on('window-all-closed', () => {
 	}
 });
 
-function createModulesWindow() {
+function createModelsWindow() {
 	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-	modulesWindow = new BrowserWindow({
+	modelsWindow = new BrowserWindow({
 		minWidth: 800,
 		minHeight: 600,
 		height,
@@ -58,16 +58,19 @@ function createModulesWindow() {
 	});
 	appWindow.close();
 
-	modulesWindow.on('closed', () => (modulesWindow = null));
+	modelsWindow.on('closed', () => (modelsWindow = null));
 
-	modulesWindow.loadFile('./src/view/modules/index.html');
+	modelsWindow.loadFile('./src/view/modelos/index.html');
 
-	modulesWindow.once('ready-to-show', () => modulesWindow.show());
+	modelsWindow.once('ready-to-show', () => {
+		modelsWindow.show();
+		modelsWindow.maximize();
+	});
 }
 
 function createEditorWindow(modulo) {
 	editorWindow = new BrowserWindow({
-		parent: modulesWindow,
+		parent: modelsWindow,
 		modal: true,
 		minWidth: 800,
 		minHeight: 600,
@@ -85,7 +88,7 @@ function createEditorWindow(modulo) {
 		editorWindow = null;
 	});
 	editorWindow.on('close', () =>
-		modulesWindow.webContents.send('update-project', proyecto)
+		modelsWindow.webContents.send('update-project', proyecto)
 	);
 
 	editorWindow.once('ready-to-show', () => {
@@ -129,7 +132,7 @@ ipcMain.on('create-project', (event, args) => {
 			try {
 				escribirArchivo(filePath, proyecto);
 				abrirArchivo(filePath);
-				createModulesWindow();
+				createModelsWindow();
 			} catch (e) {
 				if (e.code === 'ENOENT') {
 					dialog.showErrorBox(
@@ -158,7 +161,7 @@ ipcMain.on('open-prototype', event => {
 		.then(({ filePaths }) => {
 			proyecto = abrirArchivo(filePaths.toString());
 			if (proyecto) {
-				createModulesWindow();
+				createModelsWindow();
 			}
 		});
 });
@@ -169,10 +172,19 @@ ipcMain.on('get-project', event => {
 
 ipcMain.on('save-local', (event, args) => (proyecto = args));
 
+// ! Eliminar open-editor
+
 ipcMain.on('open-editor', (event, { moduleName, moduleKey }) => {
 	createEditorWindow(moduleName);
 	moduleToEdit.name = moduleName;
 	moduleToEdit.key = moduleKey;
+});
+
+ipcMain.on('open-metadata', (event, { moduleKey }) => {
+	// TODO crear la ventana del editor de metadatos
+	moduleToEdit.name = proyecto.models[moduleKey].name;
+	moduleToEdit.key = moduleKey;
+	console.log(moduleToEdit);
 });
 
 ipcMain.on('get-module-to-edit', event =>
