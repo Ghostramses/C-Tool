@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		printModels(proyecto.models, listaModelos);
 	});
 
+	ipcRenderer.on('update-project', (event, args) => (proyecto = args));
+
 	btnCrearModelo.addEventListener('click', async e => {
 		const { value: nombreModelo } = await Swal.fire({
 			title: 'Ingrese el nombre del nuevo modelo',
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					return '¡Debe escribir algo!';
 				}
 				if (!RegExp(/^[A-Z][A-Za-z]*$/).test(value)) {
-					return 'El nombre de los modelos debe iniciar con una letra mayúscula y sólo puede contener mayúsculas y minúsculas. No se admiten numeros, simbolos o acentos';
+					return 'El nombre de los modelos debe iniciar con una letra mayúscula y sólo puede contener mayúsculas y minúsculas. No se admiten numeros, espacios, simbolos o acentos.';
 				}
 			}
 		});
@@ -142,13 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
 						'object-key'
 				  );
 			ipcRenderer.send('open-metadata', {
-				moduleKey: key
+				modelKey: key
 			});
 		}
 	});
 });
 
 function printModels(models, parent) {
+	limpiarDiv(parent);
 	if (Object.entries(models).length === 0) {
 		const divSinModelos = document.createElement('div');
 		if (!parent.firstChild) {
@@ -158,7 +161,6 @@ function printModels(models, parent) {
 		}
 		return;
 	}
-	limpiarDiv(parent);
 	for (const modelo in models) {
 		if (models.hasOwnProperty(modelo)) {
 			let divModelo = document.createElement('div');
