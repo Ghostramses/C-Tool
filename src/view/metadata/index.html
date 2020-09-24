@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../css/normalize.css" />
+		<link rel="stylesheet" href="../css/rootStyles.css" />
+		<link rel="stylesheet" href="styles.css" />
+		<script
+			src="https://kit.fontawesome.com/3093a813aa.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="../../controller/metadataController.js"></script>
+	</head>
+	<body>
+		<h1 class="titulo titulo-metadatos">
+			Metadatos de <span id="modelo"></span>
+		</h1>
+		<div class="workspace contenedor">
+			<form id="formularioMetadato" class="formulario-metadatos">
+				<div id="errores"></div>
+				<label class="label-control" for="nombreMetadato"
+					>Nombre del metadato:</label
+				>
+				<input
+					class="form-control"
+					type="text"
+					name="nombreMetadato"
+					id="nombreMetadato"
+				/>
+				<label class="label-control" for="tipoMetadato"
+					>Tipo del metadato:</label
+				>
+				<select
+					class="form-control"
+					name="tipoMetadato"
+					id="tipoMetadato"
+				>
+					<option value="" disabled selected>
+						Seleccione una opción
+					</option>
+					<option value="texto">Texto</option>
+					<option value="numero">Número</option>
+					<option value="fecha">Fecha</option>
+					<option value="email">E-Mail</option>
+					<option value="telefono">Teléfono</option>
+				</select>
+				<label class="label-control" for="descripcionMetadato"
+					>Descripción del metadato (opcional):</label
+				>
+				<textarea
+					class="form-control"
+					name="descripcionMetadato"
+					id="descripcionMetadato"
+				></textarea>
+				<button class="btn btn-crear" id="btnGuardarMetadato">
+					<i class="far fa-save"></i> Guardar
+				</button>
+			</form>
+			<div class="lista-metadatos" id="listaMetadatos"></div>
+		</div>
+	</body>
+</html>

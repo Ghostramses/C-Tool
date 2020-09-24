@@ -10,8 +10,12 @@ const Modulo = require('./model/Modulo');
 let appWindow;
 let modelsWindow;
 let editorWindow;
-let proyecto;
+let metadataWindow;
+
+// * Variables del proyecto
+let proyecto = {};
 let moduleToEdit = {};
+let modelToEdit = {};
 
 function createWindow() {
 	appWindow = new BrowserWindow({
@@ -68,6 +72,8 @@ function createModelsWindow() {
 	});
 }
 
+// ! Eliminar createEditorWindow
+
 function createEditorWindow(modulo) {
 	editorWindow = new BrowserWindow({
 		parent: modelsWindow,
@@ -97,6 +103,36 @@ function createEditorWindow(modulo) {
 	});
 
 	editorWindow.focus();
+}
+
+function createMetadataWindow(model) {
+	metadataWindow = new BrowserWindow({
+		parent: modelsWindow,
+		modal: true,
+		minWidth: 800,
+		minHeight: 600,
+		title: `C-Tool: ${model} Metadata`,
+		show: false,
+		webPreferences: {
+			nodeIntegration: true,
+			nodeIntegrationInWorker: true
+		}
+	});
+
+	metadataWindow.loadFile('./src/view/metadata/index.html');
+
+	metadataWindow.on('closed', () => (metadataWindow = null));
+
+	metadataWindow.on('close', () =>
+		modelsWindow.webContents.send('update-project', proyecto)
+	);
+
+	metadataWindow.once('ready-to-show', () => {
+		metadataWindow.show();
+		metadataWindow.maximize();
+	});
+
+	metadataWindow.focus();
 }
 
 // * Listeners
@@ -180,12 +216,17 @@ ipcMain.on('open-editor', (event, { moduleName, moduleKey }) => {
 	moduleToEdit.key = moduleKey;
 });
 
-ipcMain.on('open-metadata', (event, { moduleKey }) => {
-	// TODO crear la ventana del editor de metadatos
-	moduleToEdit.name = proyecto.models[moduleKey].name;
-	moduleToEdit.key = moduleKey;
-	console.log(moduleToEdit);
+ipcMain.on('open-metadata', (event, { modelKey }) => {
+	createMetadataWindow(proyecto.models[modelKey].name);
+	modelToEdit.name = proyecto.models[modelKey].name;
+	modelToEdit.key = modelKey;
 });
+
+ipcMain.on('get-model', event => {
+	event.sender.send('model-info', { proyecto, modelToEdit });
+});
+
+// ! Eliminar get-module-to-edit
 
 ipcMain.on('get-module-to-edit', event =>
 	event.sender.send('module-info', { proyecto, moduleToEdit })
