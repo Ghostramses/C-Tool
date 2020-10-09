@@ -127,7 +127,7 @@ export class HTMLAdminViewGenerator extends HTMLGenerator {
                         <div class="modal-header text-center">
                             <h2 class="col-12">Agregar registro a modelo ${
 								this.proyecto.models[this.modelKey].name
-							}</h class="col-12"2 class="col-12">
+							}</h2>
                         </div>
                         <div class="modal-body">
                             <form id="formAdd${

@@ -39,7 +39,7 @@ export class WidgetAdministrationGenerator implements Generator {
                             $('#modalDel${this.modelo.name}').modal('hide');
                             commit(true);
                         } else {
-                            alert(\`Error \${json.noError}:\n\${json.mensaje}\`);
+                            alert(\`Error \${json.noError}:\\n\${json.mensaje}\`);
                             commit(false);
                         }
                     })

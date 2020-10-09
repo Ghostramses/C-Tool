@@ -1,6 +1,9 @@
 const fs = require('fs-extra');
-const Proyecto = require('./../model/Proyecto');
 const { app, dialog } = require('electron');
+const prettier = require('prettier');
+const phpPlugin = require('@prettier/plugin-php');
+
+const Proyecto = require('./../model/Proyecto');
 const {
 	HTMLHomeGenerator
 } = require('./../model/builder/HTMLGenerators/HTMLHomeGenerator');
@@ -38,6 +41,24 @@ const {
 const {
 	UpdateModelGenerator
 } = require('./../model/builder/PHPGenerators/UpdateModelGenerator');
+
+const prettierConfig = {
+	bracketSpacing: true,
+	htmlWhitespaceSensitivity: 'css',
+	insertPragma: false,
+	jsxBracketSameLine: false,
+	jsxSingleQuote: true,
+	printWidth: 80,
+	proseWrap: 'preserve',
+	quoteProps: 'as-needed',
+	requirePragma: false,
+	semi: true,
+	singleQuote: true,
+	tabWidth: 4,
+	trailingComma: 'none',
+	useTabs: true,
+	vueIndentScriptAndStyle: false
+};
 
 exports.escribirArchivo = (path, data) => {
 	try {
@@ -122,7 +143,13 @@ exports.generarCodigo = proyecto => {
 		// * Generar homepage
 		let generator = new HTMLHomeGenerator(proyecto);
 		generator.generate();
-		fs.writeFileSync(outDir + '/index.html', generator.getResult());
+		fs.writeFileSync(
+			outDir + '/index.html',
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'html'
+			})
+		);
 
 		// * Generar Modulo de administración
 		let moduleGenerator = new ModuleGenerator(outDir, 'Administracion');
@@ -132,7 +159,10 @@ exports.generarCodigo = proyecto => {
 		generator.generate();
 		fs.writeFileSync(
 			moduleGenerator.getResult() + '/index.html',
-			generator.getResult()
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'html'
+			})
 		);
 		// * Generar las vistas del modulo de administración
 		for (const model in proyecto.models) {
@@ -142,19 +172,25 @@ exports.generarCodigo = proyecto => {
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Vista/vta${proyecto.models[model].name}.html`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						parser: 'html'
+					})
 				);
 			}
 		}
-		// * Generar el controlador del modulo
+		// * Generar el controlador del modulo de administración
 		generator = new CargadorGenerator(proyecto);
 		generator.generate();
 		fs.writeFileSync(
 			moduleGenerator.getResult() + '/Controlador/ajxCargador.js',
-			generator.getResult()
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'babel'
+			})
 		);
 
-		// * Generar los widgets del modulo
+		// * Generar los widgets del modulo de administración
 		for (const model in proyecto.models) {
 			if (proyecto.models.hasOwnProperty(model)) {
 				generator = new WidgetAdministrationGenerator(
@@ -164,12 +200,15 @@ exports.generarCodigo = proyecto => {
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Widgets/jqx${proyecto.models[model].name}.js`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						parser: 'babel'
+					})
 				);
 			}
 		}
 
-		// * Generar los modelos del modulo
+		// * Generar los modelos del modulo de administración
 		for (const model in proyecto.models) {
 			if (proyecto.models.hasOwnProperty(model)) {
 				const data = proyecto.models[model];
@@ -178,33 +217,49 @@ exports.generarCodigo = proyecto => {
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Modelo/mod${data.name}Obtener.php`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						plugins: [phpPlugin],
+						parser: 'php'
+					})
 				);
 				generator = new CreateModelGenerator(data);
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Modelo/mod${data.name}Crear.php`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						plugins: [phpPlugin],
+						parser: 'php'
+					})
 				);
 				generator = new DeleteModelGenerator(data);
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Modelo/mod${data.name}Eliminar.php`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						plugins: [phpPlugin],
+						parser: 'php'
+					})
 				);
 				generator = new UpdateModelGenerator(data);
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Modelo/mod${data.name}Modificar.php`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						plugins: [phpPlugin],
+						parser: 'php'
+					})
 				);
 			}
 		}
 
-		// * Generar los modulos
+		// * Generar los modulos de los modelos
 		for (const model in proyecto.models) {
 			if (proyecto.models.hasOwnProperty(model)) {
 				const data = proyecto.models[model];
@@ -214,26 +269,39 @@ exports.generarCodigo = proyecto => {
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() + '/index.html',
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						parser: 'html'
+					})
 				);
 				generator = new WidgetGenerator(data);
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() + '/Widgets/jqxData.js',
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						parser: 'babel'
+					})
 				);
 				generator = new ReadModelGenerator(data);
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() +
 						`/Modelo/mod${data.name}Obtener.php`,
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						plugins: [phpPlugin],
+						parser: 'php'
+					})
 				);
 				generator = new ControllerGenerator(data.name);
 				generator.generate();
 				fs.writeFileSync(
 					moduleGenerator.getResult() + '/Controlador/ajxLoader.js',
-					generator.getResult()
+					prettier.format(generator.getResult(), {
+						...prettierConfig,
+						parser: 'babel'
+					})
 				);
 			}
 		}
