@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	ipcRenderer.on('update-project', (event, args) => (proyecto = args));
 
+	ipcRenderer.on('save', event => ipcRenderer.send('save-local', proyecto));
+
 	btnCrearModelo.addEventListener('click', async e => {
 		const { value: nombreModelo } = await Swal.fire({
 			title: 'Ingrese el nombre del nuevo modelo',
