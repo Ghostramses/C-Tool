@@ -1,0 +1,294 @@
+/* Globales */
+
+.modal-header {
+	justify-content: center;
+}
+
+.spinner-svg {
+	text-align: center;
+	display: none;
+}
+
+.spinner-svg img {
+	width: 100px;
+	height: 100px;
+}
+
+/* Botones */
+.btn-crud {
+	text-align: center;
+	font-size: 1rem;
+}
+
+.btn-crud > span {
+	margin: auto;
+}
+
+.contenedor-ancla-home {
+	padding: 0.5rem 1rem;
+}
+
+.btn-home {
+	background-color: #990000;
+	color: #f8f9fa;
+	border-radius: 10px;
+}
+/* Paneles */
+
+.pnl-crud {
+	align-items: center;
+	justify-content: space-around;
+}
+
+/* Spinners */
+.spinner {
+	width: 40px;
+	height: 40px;
+	display: none;
+	position: relative;
+	margin: 5px auto;
+}
+
+.double-bounce1,
+.double-bounce2 {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #990000;
+	opacity: 0.6;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	-webkit-animation: sk-bounce 2s infinite ease-in-out;
+	animation: sk-bounce 2s infinite ease-in-out;
+}
+
+.double-bounce2 {
+	-webkit-animation-delay: -1s;
+	animation-delay: -1s;
+}
+
+@-webkit-keyframes sk-bounce {
+	0%,
+	100% {
+		-webkit-transform: scale(0);
+	}
+	50% {
+		-webkit-transform: scale(1);
+	}
+}
+
+@keyframes sk-bounce {
+	0%,
+	100% {
+		transform: scale(0);
+		-webkit-transform: scale(0);
+	}
+	50% {
+		transform: scale(1);
+		-webkit-transform: scale(1);
+	}
+}
+
+/* Paneles */
+.modal-content .panel {
+	margin: 1rem;
+}
+
+.panel {
+	margin-bottom: 20px;
+	background-color: #ffffff;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.panel-info {
+	border-color: #bce8f1;
+}
+
+.panel-heading {
+	padding: 10px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.panel-info > .panel-heading {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+.panel-body {
+	padding: 15px;
+}
+
+.panel-body.pre-scrollable {
+	max-height: 200px;
+}
+
+/* Utilidades */
+.p0 {
+	padding: 0;
+}
+
+.space-between {
+	justify-content: space-between;
+}
+
+.control-label {
+	font-weight: 700;
+	padding-top: 7px;
+	margin-bottom: 0;
+	text-align: right;
+}
+
+/* Quitar las flechas de los input number*/
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
+/* Pagina principal */
+/* Contenedor */
+.container.principal {
+	margin: 1rem auto;
+	padding-bottom: 1rem;
+}
+/* Formulario de login principal */
+.login {
+	width: 310px;
+	margin: 0 auto 1rem;
+	padding: 1rem 0;
+	border: 2px solid #d3d3d3;
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+/* Administracion */
+.navbar a {
+	color: #e3e3e3;
+	transition: 0.3s ease-in-out color;
+}
+
+.navbar a:hover {
+	color: #f7ea7a;
+}
+
+.dropdown .dropdown-menu {
+	position: absolute;
+	z-index: 1999;
+}
+
+.dropdown-option {
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+.navbar-right {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.navbar-right p {
+	margin: 0 20px 0 0;
+	color: #e3e3e3;
+}
+
+.navbar-right li:last-child p {
+	margin: 0;
+}
+
+.cerrar-sesion {
+	transition: 0.2s color ease-in;
+	cursor: pointer;
+}
+
+.cerrar-sesion :hover {
+	color: #f7ea7a;
+}
+
+.admon-grid {
+	padding: 1rem;
+}
+
+/* Servicios */
+
+.aside-main-right h2,
+.aside-main-left h2 {
+	font-size: 28px;
+}
+
+@media (min-width: 768px) {
+	.aside-main-right {
+		padding: 1rem 2rem 1rem 0;
+	}
+
+	.aside-main-left {
+		padding: 1rem 0 1rem 2rem;
+	}
+}
+
+.card-list-element {
+	padding: 1rem;
+}
+
+.card {
+	width: 100%;
+	height: 300px;
+}
+
+.card-title {
+	background-color: #990000;
+	color: #ffffff;
+	text-align: center;
+	font-size: 20px;
+	margin: 0;
+	padding: 10px 5px;
+}
+
+.card-body {
+	margin: 0 auto;
+	padding: 10px 0;
+	max-width: 90%;
+	text-align: justify;
+	font-size: 14px;
+	color: #5f5f5f;
+}
+
+.card-footer {
+	background-color: #17a2b8;
+	color: #ffffff;
+	padding: 0;
+	border-radius: unset;
+	padding: 10px 5px;
+}
+
+.list-group-item .badge {
+	float: right;
+}
+
+.filtrar-departamento {
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.filtrar-departamento:hover {
+	color: #ecb14b;
+}
+
+.opcion {
+	margin: 1rem 0;
+}
+
+.historial {
+	margin: 1rem;
+}
