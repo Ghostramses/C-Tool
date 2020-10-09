@@ -1,8 +1,9 @@
 node_modules/
 package-lock.json
 
-src/model/composite
-src/model/iterator
+src/model/builder
 src/model/ts/index.ts
+src/model/index.js
+src/model/index.js.map
 
 dist

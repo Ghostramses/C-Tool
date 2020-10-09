@@ -5,7 +5,7 @@
 	"main": "src/index.js",
 	"scripts": {
 		"compile": "tsc",
-		"compile:run": "tsc && node src/model/nodes",
+		"compile:run": "tsc && node src/model/",
 		"play": "electron .",
 		"dev": "npm run compile && npm run play",
 		"build:windows": "electron-builder -w",
@@ -26,6 +26,7 @@
 		"electron-builder": "^22.8.0"
 	},
 	"dependencies": {
+		"fs-extra": "^9.0.1",
 		"sweetalert2": "^9.17.1",
 		"typescript": "^4.0.2"
 	}
