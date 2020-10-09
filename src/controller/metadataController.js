@@ -257,15 +257,19 @@ function printMetadata(metadata, parent) {
 
 function typeToString(type) {
 	switch (type) {
-		case 'texto':
+		case 'text':
 			return 'Texto';
-		case 'numero':
+		case 'number':
 			return 'Número';
-		case 'fecha':
+		case 'date':
 			return 'Fecha';
 		case 'email':
 			return 'E-Mail';
-		case 'telefono':
+		case 'tel':
 			return 'Teléfono';
+		case 'password':
+			return 'Contraseña';
+		case 'longtext':
+			return 'Texto largo';
 	}
 }
