@@ -1,22 +1,28 @@
-const { app, BrowserWindow, ipcMain, dialog, screen } = require('electron');
+const {
+	app,
+	BrowserWindow,
+	ipcMain,
+	dialog,
+	screen,
+	webContents,
+	Menu
+} = require('electron');
 const fs = require('fs');
 
 //imports
-const { abrirArchivo, escribirArchivo } = require('./functions');
+const { abrirArchivo, escribirArchivo, generarCodigo } = require('./functions');
 
 const Proyecto = require('./model/Proyecto');
-const Modulo = require('./model/Modulo');
 
 let appWindow;
 let modelsWindow;
-let editorWindow;
 let metadataWindow;
 
 // * Variables del proyecto
 let proyecto = {};
-let moduleToEdit = {};
 let modelToEdit = {};
 
+// * Ventana inicial
 function createWindow() {
 	appWindow = new BrowserWindow({
 		width: 800,
@@ -46,6 +52,47 @@ app.on('window-all-closed', () => {
 	}
 });
 
+// * Ventana de los modelos
+
+// Menú
+const templateMenu = [
+	{
+		label: 'Archivo',
+		submenu: [
+			{
+				label: 'Guardar cambios',
+				accelerator: 'Ctrl+S',
+				click() {
+					modelsWindow.webContents.send('update-project', proyecto);
+					modelsWindow.webContents.send('save');
+					escribirArchivo(
+						proyecto.path + '/' + proyecto.name + '.json',
+						proyecto
+					);
+				}
+			}
+		]
+	},
+	{
+		label: 'Proyecto',
+		submenu: [
+			{
+				label: 'Generar código',
+				accelerator: 'Ctrl+E',
+				click() {
+					modelsWindow.webContents.send('update-project', proyecto);
+					modelsWindow.webContents.send('save');
+					escribirArchivo(
+						proyecto.path + '/' + proyecto.name + '.json',
+						proyecto
+					);
+					generarCodigo(proyecto);
+				}
+			}
+		]
+	}
+];
+
 function createModelsWindow() {
 	const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 	modelsWindow = new BrowserWindow({
@@ -66,45 +113,16 @@ function createModelsWindow() {
 
 	modelsWindow.loadFile('./src/view/modelos/index.html');
 
+	const mainMenu = Menu.buildFromTemplate(templateMenu);
+	Menu.setApplicationMenu(mainMenu);
+
 	modelsWindow.once('ready-to-show', () => {
 		modelsWindow.show();
 		modelsWindow.maximize();
 	});
 }
 
-// ! Eliminar createEditorWindow
-
-function createEditorWindow(modulo) {
-	editorWindow = new BrowserWindow({
-		parent: modelsWindow,
-		modal: true,
-		minWidth: 800,
-		minHeight: 600,
-		title: `C-Tool: ${modulo} Editor`,
-		show: false,
-		webPreferences: {
-			nodeIntegration: true,
-			nodeIntegrationInWorker: true
-		}
-	});
-
-	editorWindow.loadFile('./src/view/editor/index.html');
-
-	editorWindow.on('closed', () => {
-		editorWindow = null;
-	});
-	editorWindow.on('close', () =>
-		modelsWindow.webContents.send('update-project', proyecto)
-	);
-
-	editorWindow.once('ready-to-show', () => {
-		editorWindow.show();
-		editorWindow.maximize();
-	});
-
-	editorWindow.focus();
-}
-
+// * Ventana de los metadatos
 function createMetadataWindow(model) {
 	metadataWindow = new BrowserWindow({
 		parent: modelsWindow,
@@ -208,14 +226,6 @@ ipcMain.on('get-project', event => {
 
 ipcMain.on('save-local', (event, args) => (proyecto = args));
 
-// ! Eliminar open-editor
-
-ipcMain.on('open-editor', (event, { moduleName, moduleKey }) => {
-	createEditorWindow(moduleName);
-	moduleToEdit.name = moduleName;
-	moduleToEdit.key = moduleKey;
-});
-
 ipcMain.on('open-metadata', (event, { modelKey }) => {
 	createMetadataWindow(proyecto.models[modelKey].name);
 	modelToEdit.name = proyecto.models[modelKey].name;
@@ -225,12 +235,6 @@ ipcMain.on('open-metadata', (event, { modelKey }) => {
 ipcMain.on('get-model', event => {
 	event.sender.send('model-info', { proyecto, modelToEdit });
 });
-
-// ! Eliminar get-module-to-edit
-
-ipcMain.on('get-module-to-edit', event =>
-	event.sender.send('module-info', { proyecto, moduleToEdit })
-);
 
 ipcMain.on('test', event => {
 	console.log(event);
