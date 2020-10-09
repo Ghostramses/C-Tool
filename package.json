@@ -27,7 +27,6 @@
 	},
 	"dependencies": {
 		"@prettier/plugin-php": "^0.15.0",
-		"electron-progressbar": "^1.2.0",
 		"fs-extra": "^9.0.1",
 		"prettier": "^2.1.2",
 		"sweetalert2": "^9.17.1",

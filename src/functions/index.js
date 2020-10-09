@@ -101,211 +101,229 @@ exports.abrirArchivo = path => {
 	}
 };
 
-exports.generarCodigo = proyecto => {
-	const outDir = proyecto.path + '/out';
-	try {
-		//Crear el directorio de salida si este no existe
-		if (fs.existsSync(outDir)) {
-			fs.removeSync(outDir);
-		}
-		fs.mkdirSync(outDir);
-		//Crear los directorios con archivos estaticos
-		fs.copySync(app.getAppPath() + '/static/_estilo', outDir + '/_estilo', {
-			dereference: true
-		});
-		fs.copySync(app.getAppPath() + '/static/_img', outDir + '/_img', {
-			dereference: true
-		});
-		fs.copySync(
-			app.getAppPath() + '/static/_jscript',
-			outDir + '/_jscript',
-			{
+exports.generarCodigo = (proyecto, browserWindow) => {
+	if (Object.keys(proyecto.models).length > 0) {
+		const outDir = proyecto.path + '/out';
+		try {
+			//Si el directorio de salia existe eliminarlo
+			if (fs.existsSync(outDir)) {
+				fs.removeSync(outDir);
+			}
+			fs.mkdirSync(outDir);
+			//Crear los directorios con archivos estaticos
+			fs.copySync(
+				app.getAppPath() + '/static/_estilo',
+				outDir + '/_estilo',
+				{
+					dereference: true
+				}
+			);
+			fs.copySync(app.getAppPath() + '/static/_img', outDir + '/_img', {
 				dereference: true
-			}
-		);
-		fs.copySync(
-			app.getAppPath() + '/static/_jqwidgets',
-			outDir + '/_jqwidgets',
-			{
-				dereference: true
-			}
-		);
-		fs.copySync(app.getAppPath() + '/static/Modelo', outDir + '/Modelo', {
-			dereference: true
-		});
-		// ! Cambiar los permisos para que puedan acceder
-		fs.chmodSync(outDir + '/_estilo/', 0o755);
-		fs.chmodSync(outDir + '/_img/', 0o755);
-		fs.chmodSync(outDir + '/_jscript/', 0o755);
-		fs.chmodSync(outDir + '/_jqwidgets/', 0o755);
-		fs.chmodSync(outDir + '/Modelo/', 0o755);
+			});
+			fs.copySync(
+				app.getAppPath() + '/static/_jscript',
+				outDir + '/_jscript',
+				{
+					dereference: true
+				}
+			);
+			fs.copySync(
+				app.getAppPath() + '/static/_jqwidgets',
+				outDir + '/_jqwidgets',
+				{
+					dereference: true
+				}
+			);
+			fs.copySync(
+				app.getAppPath() + '/static/Modelo',
+				outDir + '/Modelo',
+				{
+					dereference: true
+				}
+			);
+			// ! Cambiar los permisos para que puedan acceder
+			fs.chmodSync(outDir + '/_estilo/', 0o755);
+			fs.chmodSync(outDir + '/_img/', 0o755);
+			fs.chmodSync(outDir + '/_jscript/', 0o755);
+			fs.chmodSync(outDir + '/_jqwidgets/', 0o755);
+			fs.chmodSync(outDir + '/Modelo/', 0o755);
 
-		// * Generar homepage
-		let generator = new HTMLHomeGenerator(proyecto);
-		generator.generate();
-		fs.writeFileSync(
-			outDir + '/index.html',
-			prettier.format(generator.getResult(), {
-				...prettierConfig,
-				parser: 'html'
-			})
-		);
+			// * Generar homepage
+			let generator = new HTMLHomeGenerator(proyecto);
+			generator.generate();
+			fs.writeFileSync(
+				outDir + '/index.html',
+				prettier.format(generator.getResult(), {
+					...prettierConfig,
+					parser: 'html'
+				})
+			);
 
-		// * Generar Modulo de administración
-		let moduleGenerator = new ModuleGenerator(outDir, 'Administracion');
-		moduleGenerator.generate();
-		// * Generar index del modulo de administración
-		generator = new HTMLAdministrationGenerator(proyecto);
-		generator.generate();
-		fs.writeFileSync(
-			moduleGenerator.getResult() + '/index.html',
-			prettier.format(generator.getResult(), {
-				...prettierConfig,
-				parser: 'html'
-			})
-		);
-		// * Generar las vistas del modulo de administración
-		for (const model in proyecto.models) {
-			if (proyecto.models.hasOwnProperty(model)) {
-				generator = new HTMLAdminViewGenerator(proyecto, model);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Vista/vta${proyecto.models[model].name}.html`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						parser: 'html'
-					})
-				);
+			// * Generar Modulo de administración
+			let moduleGenerator = new ModuleGenerator(outDir, 'Administracion');
+			moduleGenerator.generate();
+			// * Generar index del modulo de administración
+			generator = new HTMLAdministrationGenerator(proyecto);
+			generator.generate();
+			fs.writeFileSync(
+				moduleGenerator.getResult() + '/index.html',
+				prettier.format(generator.getResult(), {
+					...prettierConfig,
+					parser: 'html'
+				})
+			);
+			// * Generar las vistas del modulo de administración
+			for (const model in proyecto.models) {
+				if (proyecto.models.hasOwnProperty(model)) {
+					generator = new HTMLAdminViewGenerator(proyecto, model);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Vista/vta${proyecto.models[model].name}.html`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							parser: 'html'
+						})
+					);
+				}
 			}
+			// * Generar el controlador del modulo de administración
+			generator = new CargadorGenerator(proyecto);
+			generator.generate();
+			fs.writeFileSync(
+				moduleGenerator.getResult() + '/Controlador/ajxCargador.js',
+				prettier.format(generator.getResult(), {
+					...prettierConfig,
+					parser: 'babel'
+				})
+			);
+
+			// * Generar los widgets del modulo de administración
+			for (const model in proyecto.models) {
+				if (proyecto.models.hasOwnProperty(model)) {
+					generator = new WidgetAdministrationGenerator(
+						proyecto.models[model]
+					);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Widgets/jqx${proyecto.models[model].name}.js`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							parser: 'babel'
+						})
+					);
+				}
+			}
+
+			// * Generar los modelos del modulo de administración
+			for (const model in proyecto.models) {
+				if (proyecto.models.hasOwnProperty(model)) {
+					const data = proyecto.models[model];
+					generator = new ReadModelGenerator(data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Modelo/mod${data.name}Obtener.php`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							plugins: [phpPlugin],
+							parser: 'php'
+						})
+					);
+					generator = new CreateModelGenerator(data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Modelo/mod${data.name}Crear.php`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							plugins: [phpPlugin],
+							parser: 'php'
+						})
+					);
+					generator = new DeleteModelGenerator(data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Modelo/mod${data.name}Eliminar.php`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							plugins: [phpPlugin],
+							parser: 'php'
+						})
+					);
+					generator = new UpdateModelGenerator(data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Modelo/mod${data.name}Modificar.php`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							plugins: [phpPlugin],
+							parser: 'php'
+						})
+					);
+				}
+			}
+
+			// * Generar los modulos de los modelos
+			for (const model in proyecto.models) {
+				if (proyecto.models.hasOwnProperty(model)) {
+					const data = proyecto.models[model];
+					moduleGenerator = new ModuleGenerator(outDir, data.name);
+					moduleGenerator.generate();
+					generator = new HTMLViewGenerator(proyecto.name, data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() + '/index.html',
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							parser: 'html'
+						})
+					);
+					generator = new WidgetGenerator(data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() + '/Widgets/jqxData.js',
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							parser: 'babel'
+						})
+					);
+					generator = new ReadModelGenerator(data);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							`/Modelo/mod${data.name}Obtener.php`,
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							plugins: [phpPlugin],
+							parser: 'php'
+						})
+					);
+					generator = new ControllerGenerator(data.name);
+					generator.generate();
+					fs.writeFileSync(
+						moduleGenerator.getResult() +
+							'/Controlador/ajxLoader.js',
+						prettier.format(generator.getResult(), {
+							...prettierConfig,
+							parser: 'babel'
+						})
+					);
+				}
+			}
+			dialog.showMessageBox(browserWindow, {
+				type: 'info',
+				title: 'Proyecto exportado',
+				message:
+					'El proyecto ha sido exportado con exito, puede encontrar los archivos generados en la carpeta out.'
+			});
+		} catch (e) {
+			console.log(e);
 		}
-		// * Generar el controlador del modulo de administración
-		generator = new CargadorGenerator(proyecto);
-		generator.generate();
-		fs.writeFileSync(
-			moduleGenerator.getResult() + '/Controlador/ajxCargador.js',
-			prettier.format(generator.getResult(), {
-				...prettierConfig,
-				parser: 'babel'
-			})
-		);
-
-		// * Generar los widgets del modulo de administración
-		for (const model in proyecto.models) {
-			if (proyecto.models.hasOwnProperty(model)) {
-				generator = new WidgetAdministrationGenerator(
-					proyecto.models[model]
-				);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Widgets/jqx${proyecto.models[model].name}.js`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						parser: 'babel'
-					})
-				);
-			}
-		}
-
-		// * Generar los modelos del modulo de administración
-		for (const model in proyecto.models) {
-			if (proyecto.models.hasOwnProperty(model)) {
-				const data = proyecto.models[model];
-				generator = new ReadModelGenerator(data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Modelo/mod${data.name}Obtener.php`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						plugins: [phpPlugin],
-						parser: 'php'
-					})
-				);
-				generator = new CreateModelGenerator(data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Modelo/mod${data.name}Crear.php`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						plugins: [phpPlugin],
-						parser: 'php'
-					})
-				);
-				generator = new DeleteModelGenerator(data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Modelo/mod${data.name}Eliminar.php`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						plugins: [phpPlugin],
-						parser: 'php'
-					})
-				);
-				generator = new UpdateModelGenerator(data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Modelo/mod${data.name}Modificar.php`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						plugins: [phpPlugin],
-						parser: 'php'
-					})
-				);
-			}
-		}
-
-		// * Generar los modulos de los modelos
-		for (const model in proyecto.models) {
-			if (proyecto.models.hasOwnProperty(model)) {
-				const data = proyecto.models[model];
-				moduleGenerator = new ModuleGenerator(outDir, data.name);
-				moduleGenerator.generate();
-				generator = new HTMLViewGenerator(proyecto.name, data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() + '/index.html',
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						parser: 'html'
-					})
-				);
-				generator = new WidgetGenerator(data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() + '/Widgets/jqxData.js',
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						parser: 'babel'
-					})
-				);
-				generator = new ReadModelGenerator(data);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() +
-						`/Modelo/mod${data.name}Obtener.php`,
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						plugins: [phpPlugin],
-						parser: 'php'
-					})
-				);
-				generator = new ControllerGenerator(data.name);
-				generator.generate();
-				fs.writeFileSync(
-					moduleGenerator.getResult() + '/Controlador/ajxLoader.js',
-					prettier.format(generator.getResult(), {
-						...prettierConfig,
-						parser: 'babel'
-					})
-				);
-			}
-		}
-	} catch (e) {
-		console.log(e);
+	} else {
 	}
 };

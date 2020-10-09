@@ -86,7 +86,7 @@ const templateMenu = [
 						proyecto.path + '/' + proyecto.name + '.json',
 						proyecto
 					);
-					generarCodigo(proyecto);
+					generarCodigo(proyecto, modelsWindow);
 				}
 			}
 		]
@@ -136,6 +136,8 @@ function createMetadataWindow(model) {
 			nodeIntegrationInWorker: true
 		}
 	});
+
+	metadataWindow.removeMenu();
 
 	metadataWindow.loadFile('./src/view/metadata/index.html');
 
