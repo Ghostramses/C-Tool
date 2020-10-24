@@ -1,20 +1,15 @@
-import { Generator } from '../Generator';
+import { HTMLGenerator } from './HTMLGenerator';
 
-export class HTMLViewGenerator implements Generator {
-	private code: string = '';
+export class HTMLViewGenerator extends HTMLGenerator {
 	private modelo: any;
-	private proyecto;
 
 	constructor(proyecto: string, modelo: any) {
-		this.proyecto = proyecto;
+        super(proyecto)
 		this.modelo = modelo;
 	}
 
-	public reset(): void {
-		this.code = '';
-	}
 	public generate(): void {
-		this.code = `
+		this.html = `
         <!DOCTYPE HTML>
         <html>
             <head>
@@ -36,7 +31,7 @@ export class HTMLViewGenerator implements Generator {
                 <!--Scripts-->
                 <script src="../_jscript/JQuery-1.11.1.js"></script>
                 <script src="../_jscript/bootstrap.min.js"></script>
-                <script src="./Controlador/ajxLoader.js"></script>
+                <script src="./controlador/ajxLoader.js"></script>
 
                 <!--Widgets-->
                 <script
@@ -107,8 +102,5 @@ export class HTMLViewGenerator implements Generator {
             </body>
         </html>
         `;
-	}
-	public getResult(): string {
-		return this.code;
 	}
 }

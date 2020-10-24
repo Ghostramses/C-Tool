@@ -28,7 +28,7 @@ export class WidgetAdministrationGenerator implements Generator {
                     let {id${
 						this.modelo.name
 					}} = $("#jqxgrid").jqxGrid("getrowdatabyid",rowid);
-                    $.post("Modelo/mod${this.modelo.name}Eliminar.php",{id${
+                    $.post("modelo/mod${this.modelo.name}Eliminar.php",{id${
 				this.modelo.name
 			}},function(data){
                         let json = JSON.parse(data);
@@ -46,7 +46,7 @@ export class WidgetAdministrationGenerator implements Generator {
                 },
                 updaterow:function(rowid,newdata,commit){
                     ${this.getRowData()} = newdata
-                    $.post("Modelo/mod${this.modelo.name}Modificar.php",
+                    $.post("modelo/mod${this.modelo.name}Modificar.php",
                         {id${this.modelo.name},${this.getAllVars()}},
                         function(data){
                             let json = JSON.parse(data)
@@ -60,7 +60,7 @@ export class WidgetAdministrationGenerator implements Generator {
                             }
                     })
                 },
-                url: 'Modelo/mod${this.modelo.name}Obtener.php',
+                url: 'modelo/mod${this.modelo.name}Obtener.php',
                 type: 'POST',
                 async: true
             };
@@ -145,7 +145,7 @@ export class WidgetAdministrationGenerator implements Generator {
 
             $("#btnAdd${this.modelo.name}").click(function(){
                 ${this.dataValidation()}
-                $.post("Modelo/mod${this.modelo.name}Crear.php",{${this.getVars(
+                $.post("modelo/mod${this.modelo.name}Crear.php",{${this.getVars(
 				false
 			)}},function(data){
                 let json = JSON.parse(data);

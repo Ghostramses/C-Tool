@@ -42,7 +42,7 @@ export class HTMLAdministrationGenerator extends HTMLGenerator {
                 <!--Scripts-->
                 <script src="../_jscript/JQuery-1.11.1.js"></script>
                 <script src="../_jscript/bootstrap.min.js"></script>
-                <script src="./Controlador/ajxCargador.js"></script>
+                <script src="./controlador/ajxCargador.js"></script>
 
                 <!--Widgets-->
                 <script

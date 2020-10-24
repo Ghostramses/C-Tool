@@ -2,10 +2,10 @@ import { Generator } from '../Generator';
 
 export class ReadModelGenerator implements Generator {
 	private code: string = '';
-	private model: any;
+	private modelo: any;
 
-	constructor(model: any) {
-		this.model = model;
+	constructor(modelo: any) {
+		this.modelo = modelo;
 	}
 
 	public reset(): void {
@@ -15,9 +15,9 @@ export class ReadModelGenerator implements Generator {
 	private generateRows(): string {
 		let rows: string = '';
 
-		for (const key in this.model.metadata) {
-			if (this.model.metadata.hasOwnProperty(key)) {
-				const data = this.model.metadata[key];
+		for (const key in this.modelo.metadata) {
+			if (this.modelo.metadata.hasOwnProperty(key)) {
+				const data = this.modelo.metadata[key];
 				rows += `
                     ${
 						data.description
@@ -72,7 +72,7 @@ export class ReadModelGenerator implements Generator {
             $arreglo = array();
             for($i=0;$i<5;$i++){
                 $fila = array();
-                $fila[id${this.model.name}]=$i+1;
+                $fila['id${this.modelo.name}']=$i+1;
                 ${this.generateRows()}
                 $arreglo[]=$fila;
             }

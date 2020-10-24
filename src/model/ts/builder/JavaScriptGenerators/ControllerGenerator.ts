@@ -11,7 +11,7 @@ export class ControllerGenerator implements Generator {
 	public generate(): void {
 		this.js = `
             $(document).ready(function(){
-                $.getScript("Widgets/jqxData.js",function(){
+                $.getScript("widgets/jqxData.js",function(){
                     widget${this.modelName}Cargar()
                 })
             });

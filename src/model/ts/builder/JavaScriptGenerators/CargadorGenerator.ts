@@ -37,9 +37,9 @@ export class CargadorGenerator implements Generator {
 				const data = this.proyecto.models[model];
 				cargadores += `
                 $("#btnAdmon${data.name}").click(function(){
-                    $.get("Vista/vta${data.name}.html",function(html){
+                    $.get("vista/vta${data.name}.html",function(html){
                         $("#workspace").html(html);
-                        $.getScript("Widgets/jqx${data.name}.js",function(){
+                        $.getScript("widgets/jqx${data.name}.js",function(){
                             widget${data.name}Cargar();
                         })
                     });

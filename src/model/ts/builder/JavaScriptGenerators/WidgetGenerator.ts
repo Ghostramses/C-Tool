@@ -17,7 +17,7 @@ export class WidgetGenerator implements Generator {
             let dataSource={
                 datatype:'json',
                 id:'id${this.modelo.name}',
-                url: 'Modelo/mod${this.modelo.name}Obtener.php',
+                url: 'modelo/mod${this.modelo.name}Obtener.php',
                 type: 'POST',
                 async: true
             };
