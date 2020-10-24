@@ -86,7 +86,13 @@ const templateMenu = [
 						proyecto.path + '/' + proyecto.name + '.json',
 						proyecto
 					);
-					generarCodigo(proyecto, modelsWindow);
+					generarCodigo(proyecto);
+					dialog.showMessageBox(modelsWindow, {
+						type: 'info',
+						title: 'Proyecto exportado',
+						message:
+							'El proyecto ha sido exportado con exito, puede encontrar los archivos generados en la carpeta out.'
+					});
 				}
 			}
 		]
@@ -131,6 +137,7 @@ function createMetadataWindow(model) {
 		minHeight: 600,
 		title: `C-Tool: ${model} Metadata`,
 		show: false,
+		minimizable: false,
 		webPreferences: {
 			nodeIntegration: true,
 			nodeIntegrationInWorker: true

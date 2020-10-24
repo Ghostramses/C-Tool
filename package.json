@@ -8,8 +8,8 @@
 		"compile:run": "tsc && node src/model/",
 		"play": "electron .",
 		"dev": "npm run compile && npm run play",
-		"build:windows": "electron-builder -w",
-		"build:linux": "electron-builder -l"
+		"build:windows": "npm run compile && electron-builder -w",
+		"build:linux": "npm run compile && electron-builder -l"
 	},
 	"repository": {
 		"type": "git",
@@ -29,6 +29,7 @@
 		"@prettier/plugin-php": "^0.15.0",
 		"fs-extra": "^9.0.1",
 		"prettier": "^2.1.2",
+		"rimraf": "^3.0.2",
 		"sweetalert2": "^9.17.1",
 		"typescript": "^4.0.2"
 	}

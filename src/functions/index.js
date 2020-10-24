@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const { app, dialog } = require('electron');
 const prettier = require('prettier');
 const phpPlugin = require('@prettier/plugin-php');
+const rimraf = require('rimraf');
 
 const Proyecto = require('./../model/Proyecto');
 const {
@@ -68,7 +69,7 @@ exports.escribirArchivo = (path, data) => {
 	}
 };
 
-exports.abrirArchivo = path => {
+exports.abrirArchivo = (path) => {
 	let proyecto;
 	try {
 		const data = fs.readFileSync(path, 'utf8');
@@ -101,13 +102,13 @@ exports.abrirArchivo = path => {
 	}
 };
 
-exports.generarCodigo = (proyecto, browserWindow) => {
+exports.generarCodigo = async (proyecto) => {
 	if (Object.keys(proyecto.models).length > 0) {
 		const outDir = proyecto.path + '/out';
 		try {
 			//Si el directorio de salia existe eliminarlo
 			if (fs.existsSync(outDir)) {
-				fs.removeSync(outDir);
+				await rimraf.sync(outDir);
 			}
 			fs.mkdirSync(outDir);
 			//Crear los directorios con archivos estaticos
@@ -137,17 +138,23 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 			);
 			fs.copySync(
 				app.getAppPath() + '/static/Modelo',
-				outDir + '/Modelo',
+				outDir + '/modelo',
 				{
 					dereference: true
 				}
 			);
+
+			fs.copyFileSync(
+				app.getAppPath() + '/static/conexionDB.php',
+				outDir + '/conexionDB.php'
+			);
+
 			// ! Cambiar los permisos para que puedan acceder
 			fs.chmodSync(outDir + '/_estilo/', 0o755);
 			fs.chmodSync(outDir + '/_img/', 0o755);
 			fs.chmodSync(outDir + '/_jscript/', 0o755);
 			fs.chmodSync(outDir + '/_jqwidgets/', 0o755);
-			fs.chmodSync(outDir + '/Modelo/', 0o755);
+			fs.chmodSync(outDir + '/modelo/', 0o755);
 
 			// * Generar homepage
 			let generator = new HTMLHomeGenerator(proyecto);
@@ -180,7 +187,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Vista/vta${proyecto.models[model].name}.html`,
+							`/vista/vta${proyecto.models[model].name}.html`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							parser: 'html'
@@ -192,7 +199,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 			generator = new CargadorGenerator(proyecto);
 			generator.generate();
 			fs.writeFileSync(
-				moduleGenerator.getResult() + '/Controlador/ajxCargador.js',
+				moduleGenerator.getResult() + '/controlador/ajxCargador.js',
 				prettier.format(generator.getResult(), {
 					...prettierConfig,
 					parser: 'babel'
@@ -208,7 +215,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Widgets/jqx${proyecto.models[model].name}.js`,
+							`/widgets/jqx${proyecto.models[model].name}.js`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							parser: 'babel'
@@ -225,7 +232,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Modelo/mod${data.name}Obtener.php`,
+							`/modelo/mod${data.name}Obtener.php`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							plugins: [phpPlugin],
@@ -236,7 +243,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Modelo/mod${data.name}Crear.php`,
+							`/modelo/mod${data.name}Crear.php`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							plugins: [phpPlugin],
@@ -247,7 +254,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Modelo/mod${data.name}Eliminar.php`,
+							`/modelo/mod${data.name}Eliminar.php`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							plugins: [phpPlugin],
@@ -258,7 +265,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Modelo/mod${data.name}Modificar.php`,
+							`/modelo/mod${data.name}Modificar.php`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							plugins: [phpPlugin],
@@ -286,7 +293,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator = new WidgetGenerator(data);
 					generator.generate();
 					fs.writeFileSync(
-						moduleGenerator.getResult() + '/Widgets/jqxData.js',
+						moduleGenerator.getResult() + '/widgets/jqxData.js',
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							parser: 'babel'
@@ -296,7 +303,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							`/Modelo/mod${data.name}Obtener.php`,
+							`/modelo/mod${data.name}Obtener.php`,
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							plugins: [phpPlugin],
@@ -307,7 +314,7 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					generator.generate();
 					fs.writeFileSync(
 						moduleGenerator.getResult() +
-							'/Controlador/ajxLoader.js',
+							'/controlador/ajxLoader.js',
 						prettier.format(generator.getResult(), {
 							...prettierConfig,
 							parser: 'babel'
@@ -315,12 +322,6 @@ exports.generarCodigo = (proyecto, browserWindow) => {
 					);
 				}
 			}
-			dialog.showMessageBox(browserWindow, {
-				type: 'info',
-				title: 'Proyecto exportado',
-				message:
-					'El proyecto ha sido exportado con exito, puede encontrar los archivos generados en la carpeta out.'
-			});
 		} catch (e) {
 			console.log(e);
 		}
