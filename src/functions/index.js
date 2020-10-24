@@ -69,7 +69,7 @@ exports.escribirArchivo = (path, data) => {
 	}
 };
 
-exports.abrirArchivo = (path) => {
+exports.abrirArchivo = path => {
 	let proyecto;
 	try {
 		const data = fs.readFileSync(path, 'utf8');
@@ -102,7 +102,7 @@ exports.abrirArchivo = (path) => {
 	}
 };
 
-exports.generarCodigo = async (proyecto) => {
+exports.generarCodigo = async proyecto => {
 	if (Object.keys(proyecto.models).length > 0) {
 		const outDir = proyecto.path + '/out';
 		try {
@@ -144,9 +144,12 @@ exports.generarCodigo = async (proyecto) => {
 				}
 			);
 
-			fs.copyFileSync(
-				app.getAppPath() + '/static/conexionDB.php',
-				outDir + '/conexionDB.php'
+			fs.copySync(
+				app.getAppPath() + '/static/_config',
+				outDir + '/_config',
+				{
+					dereference: true
+				}
 			);
 
 			// ! Cambiar los permisos para que puedan acceder
@@ -155,6 +158,7 @@ exports.generarCodigo = async (proyecto) => {
 			fs.chmodSync(outDir + '/_jscript/', 0o755);
 			fs.chmodSync(outDir + '/_jqwidgets/', 0o755);
 			fs.chmodSync(outDir + '/modelo/', 0o755);
+			fs.chmodSync(outDir + '/_config/', 0o755);
 
 			// * Generar homepage
 			let generator = new HTMLHomeGenerator(proyecto);
