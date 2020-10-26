@@ -1,6 +1,6 @@
 {
 	"name": "c-tool",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Generador de prototipos funcionales para la DIyS",
 	"main": "src/index.js",
 	"scripts": {
