@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('formularioMetadato').reset();
 
 			editing = false;
+			document.getElementById('nombreMetadato').disabled = false;
 		}
 	});
 
@@ -179,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					document.getElementById('formularioMetadato').reset();
 
 					editing = false;
+					document.getElementById('nombreMetadato').disabled = false;
 				}
 			});
 		} else if (
@@ -193,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						'metadata-key'
 				  );
 			editing = true;
+			document.getElementById('nombreMetadato').disabled = true;
 			document.getElementById('nombreMetadato').value =
 				proyecto.models[modelKey].metadata[key].name;
 			document.getElementById('tipoMetadato').value =
