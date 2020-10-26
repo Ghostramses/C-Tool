@@ -48,6 +48,7 @@ body {
 .acciones {
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 
 .btn-portada {
@@ -126,4 +127,11 @@ body {
 
 .btn-config:hover {
 	color: var(--paleta-2);
+}
+
+.logo-diys {
+	transform: scale(0.4);
+	position: absolute;
+	bottom: -7rem;
+	right: -33.5rem;
 }

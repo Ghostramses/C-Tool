@@ -96,6 +96,23 @@ const templateMenu = [
 				}
 			}
 		]
+	},
+	{
+		label: 'Acerca de',
+		click() {
+			dialog.showMessageBox(modelsWindow, {
+				type: 'info',
+				title: 'Acerca de C-Tool',
+				message: `Versión: 1.0.1\nFecha de creación: 26/10/2020`,
+				detail: `Elaborado en la Dirección de Información y Sistemas por:
+				Academicos:
+				- Mtro. Jesus Gabriel Banda Durán.
+				- Dr Luis Heriberto García Islas.
+				Alumnos:
+				- Alfredo Rafael González Rodríguez.
+				- Daniel Antonio Vera Ondarza.`
+			});
+		}
 	}
 ];
 
