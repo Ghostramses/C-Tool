@@ -24,7 +24,7 @@
 
 .modelo > p {
 	overflow-wrap: break-word;
-	flex: 0 0 89%;
+	flex: 0 0 84;
 	width: 80%;
 }
 
@@ -34,5 +34,5 @@
 }
 
 .btn-control-panel {
-	flex: 0 0 11%;
+	flex: 0 0 16%;
 }

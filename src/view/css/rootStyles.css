@@ -67,7 +67,8 @@ div.align-left {
 }
 
 .btn-control-edit,
-.btn-control-delete {
+.btn-control-delete,
+.btn-control-export {
 	padding: 1.2rem;
 	border: 2px solid;
 	border-radius: 10px;
@@ -91,6 +92,14 @@ div.align-left {
 
 .btn-control-delete:hover {
 	background-color: #ff0000;
+}
+
+.btn-control-export {
+	border-color: #4dabf7;
+}
+
+.btn-control-export:hover {
+	background-color: #4dabf7;
 }
 
 .btn-crear:hover {

@@ -25,7 +25,7 @@ export class WidgetGenerator implements Generator {
         }
         function widget${this.modelo.name}Cargar(){
             let dataAdapter = datosCargar()
-            $("#${this.modelo.name}Table").jqxDataTable({
+            $("#workspace").jqxDataTable({
                 width: "100%",
                 pageable: true,
                 pagerButtonsCount: 10,

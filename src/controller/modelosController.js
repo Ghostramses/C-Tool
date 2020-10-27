@@ -148,6 +148,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			ipcRenderer.send('open-metadata', {
 				modelKey: key
 			});
+		} else if (
+			e.target.classList.contains('btn-control-export') ||
+			e.target.parentNode.classList.contains('btn-control-export')
+		) {
+			const key = e.target.parentNode.parentNode.getAttribute(
+				'object-key'
+			)
+				? e.target.parentNode.parentNode.getAttribute('object-key')
+				: e.target.parentNode.parentNode.parentNode.getAttribute(
+						'object-key'
+				  );
+			guardarCambiosLocales(proyecto);
+			ipcRenderer.send('export-model', { key });
 		}
 	});
 });
@@ -173,7 +186,10 @@ function printModels(models, parent) {
             <i class="fas fa-table"></i>
             ${models[modelo].name}
             </p>
-            <div class="btn-control-panel">
+			<div class="btn-control-panel">
+				<button class="btn-control-export">
+					<i class="fas fa-sign-out-alt"></i>
+				</button>
                 <button class="btn-control-edit">
                     <i class="fas fa-edit"></i>
                 </button>

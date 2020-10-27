@@ -51,7 +51,7 @@ export class HTMLAdminViewGenerator extends HTMLGenerator {
 
 	public generate(): void {
 		this.html = `
-            <h2 class="text-center">Modelo ${
+            <h2 class="text-center">Prototipo para modelo ${
 				this.proyecto.models[this.modelKey].name
 			}</h2>
             <div class="text-right">

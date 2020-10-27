@@ -10,7 +10,12 @@ const {
 const fs = require('fs');
 
 //imports
-const { abrirArchivo, escribirArchivo, generarCodigo } = require('./functions');
+const {
+	abrirArchivo,
+	escribirArchivo,
+	generarCodigo,
+	exportarModelo
+} = require('./functions');
 
 const Proyecto = require('./model/Proyecto');
 
@@ -103,14 +108,23 @@ const templateMenu = [
 			dialog.showMessageBox(modelsWindow, {
 				type: 'info',
 				title: 'Acerca de C-Tool',
-				message: `Versión: 1.0.1\nFecha de creación: 26/10/2020`,
-				detail: `Elaborado en la Dirección de Información y Sistemas por:
+				message: `Dirección General de Planeación.
+				Dirección de Información y Sistemas.
+
+				C-ToolP
+
+				Elaborado por:
+
 				Academicos:
 				- Mtro. Jesus Gabriel Banda Durán.
 				- Dr Luis Heriberto García Islas.
+				
 				Alumnos:
 				- Alfredo Rafael González Rodríguez.
-				- Daniel Antonio Vera Ondarza.`
+				- Daniel Antonio Vera Ondarza.
+				
+				Versión 1.0.1
+				Fecha de creación/ 26/10/2020`
 			});
 		}
 	}
@@ -150,8 +164,8 @@ function createMetadataWindow(model) {
 	metadataWindow = new BrowserWindow({
 		parent: modelsWindow,
 		modal: true,
-		minWidth: 800,
-		minHeight: 600,
+		minWidth: 900,
+		minHeight: 700,
 		title: `C-Tool: ${model} Metadata`,
 		show: false,
 		minimizable: false,
@@ -262,7 +276,14 @@ ipcMain.on('get-model', event => {
 	event.sender.send('model-info', { proyecto, modelToEdit });
 });
 
-ipcMain.on('test', event => {
-	console.log(event);
-	console.log('Si envia');
+ipcMain.on('export-model', (event, { key }) => {
+	escribirArchivo(proyecto.path + '/' + proyecto.name + '.json', proyecto);
+	const out = dialog.showOpenDialogSync(modelsWindow, {
+		title: `Exportar modulo ${proyecto.models[key].name} en...`,
+		defaultPath: proyecto.path,
+		properties: ['openDirectory']
+	});
+	if (out) {
+		exportarModelo(proyecto, key, out, modelsWindow);
+	}
 });
