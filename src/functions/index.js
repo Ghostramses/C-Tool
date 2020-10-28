@@ -332,3 +332,125 @@ exports.generarCodigo = async proyecto => {
 	} else {
 	}
 };
+
+exports.exportarModelo = async (proyecto, key, out, parent) => {
+	try {
+		if (fs.existsSync(out + `/modulo${proyecto.models[key].name}`)) {
+			await rimraf.sync(out + `/modulo${proyecto.models[key].name}`);
+		}
+		let moduleGenerator = new ModuleGenerator(
+			out,
+			proyecto.models[key].name
+		);
+		moduleGenerator.generate();
+		let generator = new WidgetAdministrationGenerator(proyecto.models[key]);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() +
+				`/widgets/jqx${proyecto.models[key].name}.js`,
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'babel'
+			}),
+			err => {
+				if (err) throw err;
+			}
+		);
+		generator = new ControllerGenerator(proyecto.models[key].name, true);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() + '/controlador/ajxLoader.js',
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'babel'
+			}),
+			err => {
+				if (err) throw err;
+			}
+		);
+		generator = new HTMLAdminViewGenerator(proyecto, key);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() +
+				`/vista/vta${proyecto.models[key].name}.html`,
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'html'
+			}),
+			err => {
+				if (err) throw err;
+			}
+		);
+		generator = new HTMLViewGenerator(
+			proyecto.name,
+			proyecto.models[key],
+			true
+		);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() + '/index.html',
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				parser: 'html'
+			}),
+			err => {
+				if (err) throw err;
+			}
+		);
+		generator = new ReadModelGenerator(proyecto.models[key]);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() +
+				`/modelo/mod${proyecto.models[key].name}Obtener.php`,
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				plugins: [phpPlugin],
+				parser: 'php'
+			})
+		);
+		generator = new CreateModelGenerator(proyecto.models[key]);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() +
+				`/modelo/mod${proyecto.models[key].name}Crear.php`,
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				plugins: [phpPlugin],
+				parser: 'php'
+			})
+		);
+		generator = new DeleteModelGenerator(proyecto.models[key]);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() +
+				`/modelo/mod${proyecto.models[key].name}Eliminar.php`,
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				plugins: [phpPlugin],
+				parser: 'php'
+			})
+		);
+		generator = new UpdateModelGenerator(proyecto.models[key]);
+		generator.generate();
+		await fs.writeFile(
+			moduleGenerator.getResult() +
+				`/modelo/mod${proyecto.models[key].name}Modificar.php`,
+			prettier.format(generator.getResult(), {
+				...prettierConfig,
+				plugins: [phpPlugin],
+				parser: 'php'
+			})
+		);
+		dialog.showMessageBox(parent, {
+			type: 'info',
+			title: 'Modulo exportado',
+			message: `El modulo ${proyecto.models[key].name} ha sido exportado con exito.`
+		});
+	} catch (e) {
+		console.log(e);
+		dialog.showErrorBox(
+			'Ocurrio un problema',
+			`El modulo ${proyecto.models[key].name} no pudo ser exportado debido a un error`
+		);
+	}
+};

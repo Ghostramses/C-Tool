@@ -2,10 +2,11 @@ import { HTMLGenerator } from './HTMLGenerator';
 
 export class HTMLViewGenerator extends HTMLGenerator {
 	private modelo: any;
-
-	constructor(proyecto: string, modelo: any) {
+    private individual:boolean
+	constructor(proyecto: string, modelo: any, individual:boolean=false) {
         super(proyecto)
-		this.modelo = modelo;
+        this.modelo = modelo;
+        this.individual = individual;
 	}
 
 	public generate(): void {
@@ -34,7 +35,64 @@ export class HTMLViewGenerator extends HTMLGenerator {
                 <script src="./controlador/ajxLoader.js"></script>
 
                 <!--Widgets-->
+                ${this.individual?
+                `<script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxcore.js"
+                ></script>
                 <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxdata.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxbuttons.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxscrollbar.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxmenu.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxlistbox.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxdropdownlist.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.selection.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.columnsresize.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.filter.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.sort.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.pager.js"
+                ></script>
+                <script
+                    type="text/javascript"
+                    src="../_jqwidgets/jqxgrid.grouping.js"
+                ></script>`:
+                    `<script
                     type="text/javascript"
                     src="../_jqwidgets/jqxcore.js"
                 ></script>
@@ -57,7 +115,9 @@ export class HTMLViewGenerator extends HTMLGenerator {
                 <script
                 type="text/javascript"
                 src="../_jqwidgets/jqxwidth.js"
-            ></script>
+            ></script>`
+                }
+                
             </head>
             <body>
                 <header class="p-3">
@@ -88,9 +148,11 @@ export class HTMLViewGenerator extends HTMLGenerator {
                     </div>
                 </nav>
                 <div class="container-fluid bg-light">
-                    <h1 class="col-md-12 text-center">${this.modelo.name}</h1>
+                    ${this.individual?"":
+                    `<h1 class="col-md-12 text-center">Prototipo para modelo${this.modelo.name}</h1>` 
+                }
                     <div class="container pb-4">
-                        <div id="${this.modelo.name}Table"></div>
+                        <div id="workspace"></div>
                     </div>
                 </div>
                 <footer id="pie">

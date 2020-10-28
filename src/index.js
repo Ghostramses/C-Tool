@@ -10,13 +10,19 @@ const {
 const fs = require('fs');
 
 //imports
-const { abrirArchivo, escribirArchivo, generarCodigo } = require('./functions');
+const {
+	abrirArchivo,
+	escribirArchivo,
+	generarCodigo,
+	exportarModelo
+} = require('./functions');
 
 const Proyecto = require('./model/Proyecto');
 
 let appWindow;
 let modelsWindow;
 let metadataWindow;
+let aboutWindow;
 
 // * Variables del proyecto
 let proyecto = {};
@@ -96,6 +102,33 @@ const templateMenu = [
 				}
 			}
 		]
+	},
+	{
+		label: 'Acerca de',
+		click() {
+			aboutWindow = new BrowserWindow({
+				parent: modelsWindow,
+				modal: true,
+				width: 400,
+				height: 500,
+				minimizable: false,
+				resizable: false,
+				title: 'Acerca de C-ToolP',
+				show: false,
+				webPreferences: {
+					nodeIntegration: true,
+					nodeIntegrationInWorker: true
+				}
+			});
+
+			aboutWindow.removeMenu();
+
+			aboutWindow.loadFile('./src/view/about/index.html');
+
+			aboutWindow.on('closed', () => (aboutWindow = null));
+
+			aboutWindow.once('ready-to-show', () => aboutWindow.show());
+		}
 	}
 ];
 
@@ -106,7 +139,7 @@ function createModelsWindow() {
 		minHeight: 600,
 		height,
 		width,
-		title: 'C-Tool: ' + proyecto.path + '/' + proyecto.name,
+		title: 'C-ToolP: ' + proyecto.path + '/' + proyecto.name,
 		show: false,
 		webPreferences: {
 			nodeIntegration: true,
@@ -133,9 +166,9 @@ function createMetadataWindow(model) {
 	metadataWindow = new BrowserWindow({
 		parent: modelsWindow,
 		modal: true,
-		minWidth: 800,
-		minHeight: 600,
-		title: `C-Tool: ${model} Metadata`,
+		minWidth: 900,
+		minHeight: 700,
+		title: `C-ToolP: ${model} Metadata`,
 		show: false,
 		minimizable: false,
 		webPreferences: {
@@ -245,7 +278,14 @@ ipcMain.on('get-model', event => {
 	event.sender.send('model-info', { proyecto, modelToEdit });
 });
 
-ipcMain.on('test', event => {
-	console.log(event);
-	console.log('Si envia');
+ipcMain.on('export-model', (event, { key }) => {
+	escribirArchivo(proyecto.path + '/' + proyecto.name + '.json', proyecto);
+	const out = dialog.showOpenDialogSync(modelsWindow, {
+		title: `Exportar modulo ${proyecto.models[key].name} en...`,
+		defaultPath: proyecto.path,
+		properties: ['openDirectory']
+	});
+	if (out) {
+		exportarModelo(proyecto, key, out, modelsWindow);
+	}
 });
