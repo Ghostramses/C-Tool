@@ -22,6 +22,7 @@ const Proyecto = require('./model/Proyecto');
 let appWindow;
 let modelsWindow;
 let metadataWindow;
+let aboutWindow;
 
 // * Variables del proyecto
 let proyecto = {};
@@ -105,27 +106,28 @@ const templateMenu = [
 	{
 		label: 'Acerca de',
 		click() {
-			dialog.showMessageBox(modelsWindow, {
-				type: 'info',
-				title: 'Acerca de C-Tool',
-				message: `Dirección General de Planeación.
-				Dirección de Información y Sistemas.
-
-				C-ToolP
-
-				Elaborado por:
-
-				Academicos:
-				- Mtro. Jesus Gabriel Banda Durán.
-				- Dr Luis Heriberto García Islas.
-				
-				Alumnos:
-				- Alfredo Rafael González Rodríguez.
-				- Daniel Antonio Vera Ondarza.
-				
-				Versión 1.0.1
-				Fecha de creación/ 26/10/2020`
+			aboutWindow = new BrowserWindow({
+				parent: modelsWindow,
+				modal: true,
+				width: 400,
+				height: 500,
+				minimizable: false,
+				resizable: false,
+				title: 'Acerca de C-ToolP',
+				show: false,
+				webPreferences: {
+					nodeIntegration: true,
+					nodeIntegrationInWorker: true
+				}
 			});
+
+			aboutWindow.removeMenu();
+
+			aboutWindow.loadFile('./src/view/about/index.html');
+
+			aboutWindow.on('closed', () => (aboutWindow = null));
+
+			aboutWindow.once('ready-to-show', () => aboutWindow.show());
 		}
 	}
 ];
@@ -137,7 +139,7 @@ function createModelsWindow() {
 		minHeight: 600,
 		height,
 		width,
-		title: 'C-Tool: ' + proyecto.path + '/' + proyecto.name,
+		title: 'C-ToolP: ' + proyecto.path + '/' + proyecto.name,
 		show: false,
 		webPreferences: {
 			nodeIntegration: true,
@@ -166,7 +168,7 @@ function createMetadataWindow(model) {
 		modal: true,
 		minWidth: 900,
 		minHeight: 700,
-		title: `C-Tool: ${model} Metadata`,
+		title: `C-ToolP: ${model} Metadata`,
 		show: false,
 		minimizable: false,
 		webPreferences: {
