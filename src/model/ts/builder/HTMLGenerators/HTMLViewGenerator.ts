@@ -149,7 +149,7 @@ export class HTMLViewGenerator extends HTMLGenerator {
                 </nav>
                 <div class="container-fluid bg-light">
                     ${this.individual?"":
-                    `<h1 class="col-md-12 text-center">Prototipo para modelo${this.modelo.name}</h1>` 
+                    `<h1 class="col-md-12 text-center">Prototipo para modelo ${this.modelo.name}</h1>` 
                 }
                     <div class="container pb-4">
                         <div id="workspace"></div>
